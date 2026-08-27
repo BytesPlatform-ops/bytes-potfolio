@@ -1,36 +1,191 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bytes Platform — Studio Landing Page
 
-## Getting Started
+A single-page, portfolio-first site for **Bytes Platform**, built to convert visitors
+into design and development leads. Next.js App Router, TypeScript, Tailwind v4, Motion.
 
-First, run the development server:
+---
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm run start    # serve the production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Node 20+ recommended.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Where things live
 
-## Learn More
+| What | Where |
+|---|---|
+| Contact details, wordmark, nav, budget bands | `lib/site.ts` |
+| Portfolio projects | `data/projects.ts` |
+| Services | `data/services.ts` |
+| FAQ | `data/faq.ts` |
+| Process phases | `data/process.ts` |
+| Industries | `data/industries.ts` |
+| Technology groups | `data/technology.ts` |
+| Testimonials (intentionally empty) | `data/testimonials.ts` |
+| Design tokens & type scale | `app/globals.css` |
+| Motion language | `lib/motion.ts` |
+| Page composition | `app/page.tsx` |
+| Screenshots | `public/portfolio/` |
 
-To learn more about Next.js, take a look at the following resources:
+Each homepage section is its own component under `components/sections/`,
+with the portfolio blocks in `components/portfolio/`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Adding a project
 
-## Deploy on Vercel
+Append one object to `projects` in `data/projects.ts`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ts
+{
+  slug: "acme",
+  name: "Acme Co",
+  url: "https://acme.com/",
+  year: "2026",
+  industry: "Retail / DTC",
+  services: ["UX/UI", "Development"],
+  summary: "One line for the archive index.",
+  description: "A short editorial paragraph for the featured block.",
+  desktopImage: "/portfolio/acme-desktop.webp",
+  desktopImageAlt: "Acme homepage — …",
+  mobileImage: "/portfolio/acme-mobile.webp",
+  tabletImage: "/portfolio/acme-tablet.webp",
+  theme: "light",
+  featured: false,
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `featured: false` → appears in the **archive index** only.
+- `featured: true` → also renders a full cinematic block. The three featured
+  layouts are hand-composed (`FeaturedOne/Two/Three`); a fourth featured project
+  needs a layout choice in `app/page.tsx`.
+
+Every portfolio surface — hero collage, featured blocks, archive, responsive
+showcase, industry previews — reads from this one array.
+
+### Replacing screenshots
+
+Drop new files in `public/portfolio/` and point the project object at them.
+Recommended: WebP, desktop `2000×1250`, tablet `1000×1333`, mobile `780×1688`.
+
+To recapture from a live URL with Playwright:
+
+```bash
+npx playwright install chromium
+# capture at 1440×900 (deviceScaleFactor 2), then convert:
+npx sharp-cli -i shot.png -o public/portfolio/acme-desktop.webp resize 2000 -- webp --quality 82
+```
+
+Always write a meaningful `desktopImageAlt`.
+
+---
+
+## Contact form / email
+
+The enquiry and website-review forms validate on the client **and** on the
+server (`app/api/enquiry/route.ts`).
+
+Without credentials the API returns `503` and the UI says so plainly, then
+offers a prefilled `mailto:` link. **It never claims a message was sent when it
+wasn't.** To enable real delivery, copy `.env.example` to `.env.local`:
+
+```bash
+RESEND_API_KEY=re_xxx
+ENQUIRY_FROM_EMAIL=website@yourverifieddomain.com   # verified sender
+ENQUIRY_TO_EMAIL=hello@bytesplatform.com            # optional; defaults to siteConfig.email
+```
+
+Resend is called over `fetch` — no SDK dependency. Swapping providers means
+editing one `fetch` call.
+
+---
+
+## Analytics
+
+Nothing loads unless the variable is set. No placeholder IDs exist anywhere.
+
+```bash
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_META_PIXEL_ID=000000000000000
+NEXT_PUBLIC_LINKEDIN_PARTNER_ID=0000000
+```
+
+---
+
+## Theme colours
+
+All tokens are in the `@theme` block at the top of `app/globals.css`:
+
+```css
+--color-ink: #0a0a0b;        /* near-black surfaces   */
+--color-paper: #f3f0e9;      /* warm ivory surfaces   */
+--color-accent: #3e52ff;     /* cobalt, on light      */
+--color-accent-soft: #93a2ff;/* cobalt, on dark (AA)  */
+--color-accent-deep: #2032cf;/* the craft-demo moment */
+```
+
+Two notes if you edit this file:
+
+1. Element resets live inside `@layer base` and component classes inside
+   `@layer components`. **Unlayered CSS outranks every Tailwind utility** — moving
+   a rule out of its layer silently breaks `bg-*` / `text-*` across the site.
+2. `--color-accent` only reaches 3:1 on ink. Use `--color-accent-soft` for small
+   accent text on dark surfaces.
+
+---
+
+## Testimonials
+
+`data/testimonials.ts` is deliberately empty. While it is, the credibility
+section renders "A good partnership should feel simple." instead. Add real,
+attributable, client-approved quotes and the section switches automatically.
+
+No award, rating, metric, client logo or review count on this site is invented.
+
+---
+
+## Motion & accessibility
+
+- One shared easing/duration system in `lib/motion.ts`.
+- `prefers-reduced-motion` disables Lenis, parallax, magnetic buttons, marquees
+  and text reveals.
+- The custom cursor is desktop-and-fine-pointer only, and never replaces the
+  pointer inside form fields.
+- Modals trap focus, close on Escape, lock body scroll and restore focus.
+- Accordions expose `aria-expanded` / `aria-controls`.
+
+**Gotcha worth knowing:** an element whose `initial` state is a fully-collapsed
+`clip-path` reports zero intersection, so `whileInView` on it never fires. The
+clip must sit on a child of the observed element — see `components/motion/useReveal.ts`.
+
+---
+
+## Deploying to Vercel
+
+```bash
+npx vercel        # preview
+npx vercel --prod
+```
+
+Or push to GitHub and import the repo. Set any env vars from `.env.example`
+under **Project → Settings → Environment Variables**. Update `siteConfig.url`
+in `lib/site.ts` so canonical/OpenGraph URLs point at the real domain.
+
+---
+
+## Replace before going live
+
+- `siteConfig.phone` — currently the demo number `+1 (646) 555-0182`.
+- `siteConfig.social.linkedin` — currently `#`.
+- The footer **Privacy** link — currently `#`.
+- `siteConfig.url` — currently `https://bytesplatform.com`.
+- Optionally add a real OG image; metadata currently points at a portfolio screenshot.
