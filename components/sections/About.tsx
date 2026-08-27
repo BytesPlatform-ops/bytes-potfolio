@@ -5,72 +5,77 @@ import { TextReveal } from "@/components/motion/TextReveal";
 import { Reveal } from "@/components/motion/Reveal";
 import { me, siteConfig, personalFacts, tools } from "@/lib/site";
 import { AnimatedLink } from "@/components/ui/AnimatedLink";
-import { Portrait } from "./Portrait";
-import {
-  GridPatch,
-  Halftone,
-  InkArrow,
-  PaperScrap,
-  Plus,
-  Scribble,
-  TornPaper,
-} from "@/components/collage/Marks";
+import { CollageElement } from "@/components/collage/CollageElement";
+import { PortraitCollage } from "@/components/collage/PortraitCollage";
+import { usePointer } from "@/components/collage/usePointer";
+import { GridPatch, Halftone, InkArrow } from "@/components/collage/Marks";
 
 /**
- * About — the densest collage on the page.
+ * About — a different arrangement of the same asset library.
  *
- * Portrait overlapping the copy rather than sitting beside it in a 50/50
- * split, with the full mark vocabulary arranged around her: grid behind,
- * torn paper at the edge, halftone drifting right, scribble above, red scrap
- * near her shoulder. The tools line lives here too, so technology never needs
- * a section of its own.
+ * Where the hero centres her between two lines of type, here she is large and
+ * off to the left with the copy running past her shoulder, a massive grid
+ * behind, coral paper entering from the top and a drawn arrow pointing at
+ * her. Same vocabulary, different sentence.
  */
 export function About() {
+  const { px, py, onPointerMove, onPointerLeave } = usePointer();
+
   return (
     <section
       id="about"
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
       className="section-y relative scroll-mt-24 overflow-hidden bg-paper"
       aria-labelledby="about-heading"
     >
-      {/* ---- collage bed ---- */}
+      {/* drawn texture */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <GridPatch cell={20} className="absolute left-[2%] top-[8%] h-[30rem] w-[26rem] text-ink/[0.11]" />
-        <TornPaper className="absolute -right-14 top-[16%] h-[16rem] w-[18rem] tilt-r" fill="var(--color-coral-soft)" />
-        <Halftone gap={11} dot={1.9} className="absolute right-[8%] bottom-[10%] h-[13rem] w-[10rem] text-accent/25" />
-        <Plus className="absolute left-[46%] top-[6%] h-4 w-4 text-coral" />
-        <Plus className="absolute right-[30%] bottom-[6%] h-3 w-3 text-ink/30" />
+        <GridPatch cell={30} className="absolute left-[2vw] top-[6%] h-[38vw] w-[34vw] text-ink/[0.12]" />
+        <Halftone gap={13} dot={2.2} className="absolute -right-[2vw] bottom-[2%] hidden h-[12vw] w-[9vw] text-accent/20 lg:block" />
+      </div>
+
+      {/* paper + objects */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <CollageElement src="/collage/paper/coral-paper-strip.webp" width="20vw" className="left-[16vw] -top-[3vw]"
+          rotate={-6} parallax={0.3} px={px} py={py} from="top" delay={0.1} desktopOnly />
+        <CollageElement src="/collage/paper/blue-tape.webp" width="9vw" className="left-[6vw] top-[12%]"
+          rotate={-14} parallax={0.5} px={px} py={py} from="left" delay={0.2} desktopOnly z={30} />
+        <CollageElement src="/collage/objects/red-paper-ball-3.webp" width="6vw" className="right-[30vw] top-[14%]"
+          rotate={10} parallax={0.7} px={px} py={py} delay={0.4} idle desktopOnly />
+        <CollageElement src="/collage/objects/camera.webp" width="9vw" className="right-[8vw] top-[26%]"
+          rotate={-8} parallax={0.55} px={px} py={py} delay={0.5} desktopOnly />
+        <CollageElement src="/collage/objects/wire-globe.webp" width="6vw" className="right-[3vw] top-[8%]"
+          rotate={6} parallax={0.6} px={px} py={py} delay={0.55} desktopOnly />
       </div>
 
       <div className="shell-wide relative">
         <div className="grid grid-cols-1 items-start gap-x-[clamp(1.5rem,4vw,3rem)] gap-y-[clamp(2.5rem,6vh,4rem)] lg:grid-cols-12">
-          {/* ---- portrait ---- */}
-          <Reveal className="relative lg:col-span-5">
-            <div className="relative tilt-l">
-              <span
-                aria-hidden="true"
-                className="absolute -inset-3 -z-10 bg-accent"
-                style={{ borderRadius: "5% 20% 6% 18% / 12% 6% 16% 8%" }}
-              />
-              <Scribble className="absolute -top-10 right-2 h-14 w-36 text-ink/40" />
-              <Portrait
-                sizes="(max-width: 1024px) 92vw, 40vw"
-                className="aspect-[4/5] w-full"
-              />
-              <PaperScrap className="absolute -bottom-6 -right-6 h-16 w-16 rotate-12" />
-            </div>
+          {/* ---- her ---- */}
+          <div className="relative min-h-[26rem] lg:col-span-5 lg:min-h-[34rem]">
+            <PortraitCollage
+              crop="frame"
+              width="min(24rem,90%)"
+              className="left-0 top-0"
+              rotate={-2.5}
+              parallax={0.25}
+              px={px}
+              py={py}
+              z={10}
+            />
             <motion.span
-              className="note note-accent absolute -bottom-9 left-2"
-              initial={{ opacity: 0, rotate: 3 }}
+              className="note note-accent absolute -bottom-2 right-[6%] z-20 lg:right-0"
+              initial={{ opacity: 0, rotate: 4 }}
               whileInView={{ opacity: 1, rotate: -3 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
             >
               yes, I coded it too
             </motion.span>
-          </Reveal>
+          </div>
 
           {/* ---- copy ---- */}
-          <div className="lg:col-span-6 lg:col-start-7 lg:pt-[6vh]">
+          <div className="relative z-10 lg:col-span-6 lg:col-start-7 lg:pt-[5vh]">
             <span className="sticker sticker-coral">About</span>
 
             <TextReveal
@@ -105,21 +110,17 @@ export function About() {
               </Reveal>
             </div>
 
-            {/* ---- facts ---- */}
             <Reveal delay={3}>
               <dl className="mt-9 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-[var(--line-paper)] pt-6 sm:grid-cols-3">
                 {personalFacts.map((f) => (
                   <div key={f.k}>
                     <dt className="t-label text-muted-ink/60">{f.k}</dt>
-                    <dd className="mt-1.5 text-[0.92rem] leading-snug tracking-[-0.015em] text-ink">
-                      {f.v}
-                    </dd>
+                    <dd className="mt-1.5 text-[0.92rem] leading-snug tracking-[-0.015em] text-ink">{f.v}</dd>
                   </div>
                 ))}
               </dl>
             </Reveal>
 
-            {/* ---- tools, as a line not a section ---- */}
             <Reveal delay={4}>
               <div className="mt-8">
                 <p className="t-label text-muted-ink/60">Tools I reach for</p>
@@ -127,11 +128,7 @@ export function About() {
                   {tools.map((t, i) => (
                     <span key={t}>
                       {t}
-                      {i < tools.length - 1 ? (
-                        <span aria-hidden="true" className="text-accent">
-                          {" / "}
-                        </span>
-                      ) : null}
+                      {i < tools.length - 1 ? <span aria-hidden="true" className="text-accent">{" / "}</span> : null}
                     </span>
                   ))}
                 </p>

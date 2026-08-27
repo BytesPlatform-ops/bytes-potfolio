@@ -1,20 +1,15 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { motion, useTransform } from "motion/react";
 import { siteConfig } from "@/lib/site";
 import { TextReveal } from "@/components/motion/TextReveal";
 import { Reveal } from "@/components/motion/Reveal";
 import { ArrowUpRight } from "@/components/ui/Arrow";
 import { useModals } from "@/components/forms/ModalProvider";
-import { Portrait } from "./Portrait";
-import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
-import {
-  GridPatch,
-  Halftone,
-  PaperScrap,
-  Plus,
-  Scribble,
-} from "@/components/collage/Marks";
+import { CollageElement } from "@/components/collage/CollageElement";
+import { PortraitCollage } from "@/components/collage/PortraitCollage";
+import { usePointer } from "@/components/collage/usePointer";
+import { GridPatch, Halftone, Plus, Scribble } from "@/components/collage/Marks";
 
 /**
  * Contact.
@@ -25,50 +20,50 @@ import {
  */
 export function Contact() {
   const { openEnquiry } = useModals();
-  const reduce = useSafeReducedMotion();
 
-  const mx = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const drift = useTransform(sx, (v) => v * 8);
+  const { px, py, onPointerMove, onPointerLeave } = usePointer();
+  const drift = useTransform(px, (v) => v * 8);
 
   return (
     <section
       id="contact"
       className="relative flex min-h-[92svh] scroll-mt-24 flex-col justify-center overflow-hidden bg-[#0a0a0a] py-[clamp(4.5rem,11vh,8rem)] text-paper"
-      onPointerMove={(e) => {
-        if (reduce || e.pointerType !== "mouse") return;
-        const r = e.currentTarget.getBoundingClientRect();
-        mx.set(((e.clientX - r.left) / r.width) * 2 - 1);
-      }}
-      onPointerLeave={() => mx.set(0)}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
       aria-labelledby="contact-heading"
     >
-      {/* ---- collage bed ---- */}
+      {/* ---- collage bed: a third arrangement of the same library ---- */}
       <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ x: drift }}>
-        <GridPatch cell={22} className="absolute left-[3%] top-[10%] h-[24rem] w-[22rem] text-paper/[0.07]" />
-        <Halftone gap={12} dot={2} className="absolute right-[6%] top-[12%] h-[14rem] w-[11rem] text-accent/35" />
-        <span
-          className="absolute -left-20 top-[26%] h-[12rem] w-[15rem] bg-accent"
-          style={{ borderRadius: "8% 22% 6% 20% / 14% 6% 18% 8%" }}
-        />
-        <PaperScrap className="absolute left-[22%] top-[16%] h-14 w-14 -rotate-12" />
-        <Plus className="absolute right-[28%] bottom-[18%] h-4 w-4 text-lime" />
-        <Scribble className="absolute left-[38%] top-[6%] h-14 w-40 text-paper/25" />
+        <GridPatch cell={30} className="absolute left-[3%] top-[8%] h-[30vw] w-[26vw] text-paper/[0.08]" />
+        <Halftone gap={13} dot={2.2} className="absolute right-[7%] top-[10%] h-[15vw] w-[11vw] text-accent/35" />
+        <Scribble className="absolute left-[36%] top-[5%] h-[7vw] w-[20vw] text-paper/25" />
+        <Plus className="absolute right-[28%] bottom-[16%] h-4 w-4 text-lime" />
       </motion.div>
 
-      {/* ---- her, a different crop ---- */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-[8%] right-[5%] hidden h-[15rem] w-[10.5rem] lg:block"
-      >
-        <div className="relative h-full w-full tilt-r opacity-90">
-          <span
-            className="absolute -inset-2 bg-lime"
-            style={{ borderRadius: "6% 18% 5% 16% / 10% 6% 14% 8%" }}
-          />
-          <Portrait sizes="15rem" className="relative h-full w-full" />
-        </div>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <CollageElement src="/collage/paper/black-torn-paper.webp" width="20vw" className="-right-[4vw] top-[8%]"
+          rotate={7} parallax={0.35} px={px} py={py} from="right" delay={0.1} desktopOnly />
+        <CollageElement src="/collage/paper/blue-paper.webp" width="18vw" className="-left-[6vw] top-[30%]"
+          rotate={-8} parallax={0.3} px={px} py={py} from="left" delay={0.18} desktopOnly />
+        <CollageElement src="/collage/objects/red-paper-ball-2.webp" width="6vw" className="left-[26%] top-[14%]"
+          rotate={-14} parallax={0.7} px={px} py={py} delay={0.35} idle desktopOnly />
+        <CollageElement src="/collage/doodles/lime-stroke.webp" width="11vw" className="left-[8%] bottom-[22%]"
+          rotate={5} parallax={0.5} px={px} py={py} delay={0.42} desktopOnly />
+        <CollageElement src="/collage/doodles/star-blue.webp" width="3vw" className="right-[38%] top-[22%]"
+          rotate={0} parallax={0.8} px={px} py={py} delay={0.5} desktopOnly />
       </div>
+
+      {/* ---- her, a third crop ---- */}
+      <PortraitCollage
+        crop="bust"
+        width="min(15rem,22vw)"
+        className="bottom-[6%] right-[5%] hidden lg:block"
+        rotate={3}
+        parallax={0.3}
+        px={px}
+        py={py}
+        z={5}
+      />
 
       <div className="shell-wide relative z-10">
         <span className="sticker sticker-lime">Contact</span>
