@@ -50,12 +50,12 @@ export function SmoothScroll() {
     };
 
     document.addEventListener("click", onClick);
-    window.addEventListener("bytes:scroll-lock", onLock as EventListener);
+    window.addEventListener("site:scroll-lock", onLock as EventListener);
 
     return () => {
       cancelAnimationFrame(frame);
       document.removeEventListener("click", onClick);
-      window.removeEventListener("bytes:scroll-lock", onLock as EventListener);
+      window.removeEventListener("site:scroll-lock", onLock as EventListener);
       lenis.destroy();
     };
   }, []);

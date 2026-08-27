@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { phases } from "@/data/process";
-import { SectionLabel } from "@/components/ui/SectionLabel";
 import { TextReveal } from "@/components/motion/TextReveal";
 import { cx } from "@/lib/utils";
 
@@ -27,12 +26,12 @@ export function Process() {
     <section id="process" className="relative bg-paper" aria-labelledby="process-heading">
       {/* ---- Heading ---- */}
       <div className="shell-wide pb-[clamp(1rem,3vh,3rem)] pt-[clamp(5rem,12vh,9rem)]">
-        <SectionLabel index="04">How we work</SectionLabel>
+        <span className="sticker sticker-lime">The process</span>
         <TextReveal
           as="h2"
           id="process-heading"
           className="t-display mt-7 max-w-[12ch] text-ink"
-          lines={[<>Less mystery.</>, <>More momentum.</>]}
+          lines={[<>How this</>, <>usually goes.</>]}
         />
       </div>
 
@@ -40,7 +39,7 @@ export function Process() {
       <div
         ref={ref}
         className="relative hidden lg:block"
-        style={{ height: `${phases.length * 72}vh` }}
+        style={{ height: `${phases.length * 46}vh` }}
       >
         <div className="sticky top-0 flex h-[100svh] items-center">
           <div className="shell-wide grid w-full grid-cols-12 items-center gap-x-10">

@@ -5,40 +5,41 @@ export type Phase = {
   deliverables: string[];
 };
 
+/** Five verbs. Nothing here should sound like project management. */
 export const phases: Phase[] = [
   {
     number: "01",
-    title: "Discovery",
+    title: "Talk",
     blurb:
-      "We learn the business before we open a design tool. Who buys, what they compare you against, where the current site loses them, and what success actually looks like six months from now.",
-    deliverables: ["Stakeholder interviews", "Competitor review", "Audience & positioning", "Requirements"],
+      "You tell me what you're building and what's getting in the way. I ask a lot of questions before anyone opens a design tool.",
+    deliverables: ["A call", "Real questions", "Scope", "A fixed number"],
   },
   {
     number: "02",
-    title: "Direction",
+    title: "Think",
     blurb:
-      "Structure first, then art direction. We agree on what goes where and why, and settle the visual language — typography, colour, imagery, tone — before anything gets expensive to change.",
-    deliverables: ["Sitemap & IA", "Wireframes", "Creative direction", "Content plan"],
+      "I work out the structure, the priorities and the direction — while it's all still cheap to change.",
+    deliverables: ["Sitemap", "Wireframes", "Direction", "Content plan"],
   },
   {
     number: "03",
     title: "Design",
     blurb:
-      "High-fidelity screens across desktop, tablet and mobile — including the states nobody remembers to design. You review real layouts with real content, not a mood board.",
-    deliverables: ["Key page design", "Full template set", "Responsive layouts", "Design system"],
+      "We make it look like itself, not like another template. Real layouts, real content, every width.",
+    deliverables: ["Key screens", "Full set", "Responsive", "Design system"],
   },
   {
     number: "04",
     title: "Build",
     blurb:
-      "Front-end, back-end, CMS and integrations. Motion is added where it supports hierarchy. Everything is reviewed on a staging URL you can open any time you want.",
-    deliverables: ["Development", "CMS & integrations", "Motion & interaction", "QA"],
+      "I turn the design into the actual product. Motion where it helps, none where it doesn't.",
+    deliverables: ["Frontend", "CMS", "Motion", "QA"],
   },
   {
     number: "05",
-    title: "Launch",
+    title: "Ship",
     blurb:
-      "Cross-browser and cross-device testing, performance and accessibility passes, analytics, deployment, and a handover session so your team can run the site without calling us first.",
-    deliverables: ["Testing & optimisation", "Analytics & SEO", "Deployment", "Handover & training"],
+      "Test, polish, launch. Then a handover so you can run it yourself.",
+    deliverables: ["Testing", "Analytics", "Deploy", "Handover"],
   },
 ];

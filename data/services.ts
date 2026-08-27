@@ -18,7 +18,7 @@ export const services: Service[] = [
   {
     id: "web-development",
     number: "02",
-    title: "Web Development",
+    title: "Frontend Development",
     blurb:
       "Production front-end and full-stack work. Clean markup, real responsiveness, fast loads, and code the next developer can read without an archaeology dig.",
     points: ["Next.js / React", "CMS integration", "APIs", "Performance"],
@@ -28,7 +28,7 @@ export const services: Service[] = [
     number: "03",
     title: "UI/UX Design",
     blurb:
-      "Products, dashboards, portals and internal tools. We map the flows first, then design the screens — so the interface follows the work instead of fighting it.",
+      "Products, dashboards, portals and internal tools. I map the flows first, then design the screens — so the interface follows the work instead of fighting it.",
     points: ["User flows", "Design systems", "Dashboards", "Prototypes"],
   },
   {

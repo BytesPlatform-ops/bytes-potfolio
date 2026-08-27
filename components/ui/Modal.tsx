@@ -11,7 +11,7 @@ const FOCUSABLE =
 function setScrollLock(locked: boolean) {
   document.documentElement.style.overflow = locked ? "hidden" : "";
   window.dispatchEvent(
-    new CustomEvent("bytes:scroll-lock", { detail: { locked } }),
+    new CustomEvent("site:scroll-lock", { detail: { locked } }),
   );
 }
 

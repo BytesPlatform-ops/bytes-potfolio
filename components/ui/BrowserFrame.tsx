@@ -47,7 +47,7 @@ export function DeviceFrame({
         className,
       )}
     >
-      <div className="overflow-hidden rounded-[15px]">{children}</div>
+      <div className="overflow-hidden rounded-[var(--r-md)]">{children}</div>
     </div>
   );
 }

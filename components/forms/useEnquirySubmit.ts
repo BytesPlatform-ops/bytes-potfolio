@@ -56,7 +56,7 @@ export function useEnquirySubmit() {
         setState({
           status: "error",
           message:
-            json.error ?? "Something went wrong on our end. Please try again.",
+            json.error ?? "Something went wrong on my end. Please try again.",
         });
       } catch {
         setState({

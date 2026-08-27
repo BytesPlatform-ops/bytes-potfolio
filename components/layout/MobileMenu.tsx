@@ -26,14 +26,14 @@ export function MobileMenu({
     if (!open) return;
     document.documentElement.style.overflow = "hidden";
     window.dispatchEvent(
-      new CustomEvent("bytes:scroll-lock", { detail: { locked: true } }),
+      new CustomEvent("site:scroll-lock", { detail: { locked: true } }),
     );
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
     return () => {
       document.documentElement.style.overflow = "";
       window.dispatchEvent(
-        new CustomEvent("bytes:scroll-lock", { detail: { locked: false } }),
+        new CustomEvent("site:scroll-lock", { detail: { locked: false } }),
       );
       document.removeEventListener("keydown", onKey);
     };
@@ -100,7 +100,7 @@ export function MobileMenu({
                 }}
                 className="inline-flex h-[3.4rem] items-center gap-3 rounded-full bg-paper px-8 font-medium text-ink"
               >
-                Start a project
+                Let&rsquo;s work
                 <ArrowUpRight className="h-4 w-4" />
               </button>
             </motion.div>
@@ -118,12 +118,6 @@ export function MobileMenu({
               className="t-body block text-paper"
             >
               {siteConfig.email}
-            </a>
-            <a
-              href={`tel:${siteConfig.phoneHref}`}
-              className="t-body mt-1 block text-muted"
-            >
-              {siteConfig.phone}
             </a>
             <a
               href={siteConfig.social.linkedin}

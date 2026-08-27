@@ -1,96 +1,61 @@
 import { siteConfig } from "@/lib/site";
 import { AnimatedLink } from "@/components/ui/AnimatedLink";
+import { Halftone, Plus } from "@/components/collage/Marks";
 
-const navLinks = [
-  { label: "Work", href: "#work" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Contact", href: "#contact" },
-];
-
+/**
+ * Footer.
+ *
+ * One name, one line, three links. The four-column corporate footer this
+ * replaced was carrying navigation the page already gives you twice.
+ */
 export function Footer() {
   return (
-    <footer className="relative bg-[#050506] pb-10 pt-[clamp(3rem,7vh,5rem)] text-paper">
-      <div className="shell-wide">
-        <div className="rule rule-ink" />
+    <footer className="relative overflow-hidden bg-[#0a0a0a] pb-9 pt-[clamp(3rem,8vh,5.5rem)] text-paper">
+      <Halftone
+        gap={12}
+        dot={1.7}
+        className="pointer-events-none absolute -right-6 top-6 h-40 w-56 text-paper/[0.07]"
+      />
+      <Plus className="pointer-events-none absolute left-[12%] top-10 h-4 w-4 text-lime/60" />
 
-        <div className="grid grid-cols-1 gap-x-8 gap-y-12 pt-[clamp(2.5rem,5vh,4rem)] lg:grid-cols-12">
-          {/* wordmark */}
-          <div className="lg:col-span-6">
-            <p
-              className="flex flex-wrap items-baseline gap-x-[0.22em] font-medium leading-[0.85] tracking-[-0.05em]"
-              style={{ fontSize: "clamp(2.6rem,7vw,6rem)" }}
-            >
-              <span>{siteConfig.wordmark.left}</span>
-              <span className="text-accent">/</span>
-              <span className="text-paper/45">{siteConfig.wordmark.right}</span>
-            </p>
-            <p className="t-small measure mt-7 text-muted">
-              An independent design and development studio. We build websites,
-              web apps and digital products for companies with something worth
-              showing.
-            </p>
-          </div>
+      <div className="shell-wide relative">
+        <p
+          className="font-medium leading-[0.82] tracking-[-0.055em]"
+          style={{ fontSize: "clamp(3.2rem,13vw,11rem)" }}
+        >
+          {siteConfig.name}
+        </p>
+        <p className="note note-ink mt-4">designer / developer / internet person</p>
 
-          <nav aria-label="Footer" className="lg:col-span-3 lg:col-start-8">
-            <h2 className="t-label mb-6 text-muted">Navigate</h2>
-            <ul className="flex flex-col gap-3.5">
-              {navLinks.map((l) => (
-                <li key={l.href}>
-                  <AnimatedLink href={l.href} className="text-[1.02rem] text-paper/80">
-                    {l.label}
-                  </AnimatedLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <div className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-wrap items-end justify-between gap-x-10 gap-y-6 border-t border-[var(--line-ink)] pt-7">
+          <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
+            <li>
+              <AnimatedLink
+                href={`mailto:${siteConfig.email}`}
+                className="text-[1.02rem] text-paper/85"
+              >
+                {siteConfig.email}
+              </AnimatedLink>
+            </li>
+            <li>
+              <AnimatedLink href={siteConfig.social.linkedin} external className="text-[1.02rem] text-paper/85">
+                LinkedIn
+              </AnimatedLink>
+            </li>
+            <li>
+              <AnimatedLink href="#top" className="text-[1.02rem] text-paper/85">
+                Back to top
+              </AnimatedLink>
+            </li>
+          </ul>
 
-          <div className="lg:col-span-2">
-            <h2 className="t-label mb-6 text-muted">Contact</h2>
-            <ul className="flex flex-col gap-3.5">
-              <li>
-                <AnimatedLink
-                  href={`mailto:${siteConfig.email}`}
-                  className="text-[1.02rem] text-paper/80"
-                >
-                  Email
-                </AnimatedLink>
-              </li>
-              <li>
-                <AnimatedLink
-                  href={`tel:${siteConfig.phoneHref}`}
-                  className="text-[1.02rem] text-paper/80"
-                >
-                  Phone
-                </AnimatedLink>
-              </li>
-              <li>
-                <AnimatedLink
-                  href={siteConfig.social.linkedin}
-                  external
-                  className="text-[1.02rem] text-paper/80"
-                >
-                  LinkedIn
-                </AnimatedLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-[clamp(3rem,7vh,5rem)] flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-[var(--line-ink)] pt-7">
           <p className="t-meta text-muted">
             © 2026 {siteConfig.name}
             <span aria-hidden="true" className="mx-2.5 opacity-40">
               ·
             </span>
-            Built with intent.
+            Made by me.
           </p>
-          <div className="flex items-center gap-7">
-            <span className="t-meta text-muted">{siteConfig.timezones}</span>
-            <AnimatedLink href="#" className="t-meta text-muted">
-              Privacy
-            </AnimatedLink>
-          </div>
         </div>
       </div>
     </footer>

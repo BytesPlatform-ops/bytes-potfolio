@@ -37,7 +37,7 @@ export function ReviewModal({
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const err: Record<string, string> = {};
-    if (!form.website.trim()) err.website = "We need a URL to look at.";
+    if (!form.website.trim()) err.website = "I need a URL to look at.";
     else if (!isUrlish(form.website)) err.website = "That doesn't look like a web address.";
     if (!form.name.trim()) err.name = "Required.";
     if (!form.email.trim()) err.email = "Required.";
@@ -74,12 +74,12 @@ export function ReviewModal({
           <>
             <span className="t-label text-accent-soft">Website review</span>
             <h2 id="review-title" className="t-section mt-6 text-paper">
-              Send us the URL.
+              Send me the URL.
             </h2>
             <p className="t-body measure mt-6 text-muted">
-              We&rsquo;ll go through it properly and write back with what we&rsquo;d
-              change and why — UX, design, conversion, performance. No deck, no
-              pitch call required.
+              I&rsquo;ll go through it properly and write back with what
+              I&rsquo;d change and why — UX, design, conversion, performance. No
+              deck, no pitch call required.
             </p>
 
             <form onSubmit={onSubmit} className="mt-12 grid gap-8 sm:grid-cols-2">
@@ -156,7 +156,7 @@ export function ReviewModal({
             <h2 id="review-title" className="t-section mt-6 text-paper">
               {state.status === "sent" ? (
                 <>
-                  We&rsquo;ll take a <span className="serif-i">look.</span>
+                  I&rsquo;ll take a <span className="serif-i">look.</span>
                 </>
               ) : (
                 <>
@@ -166,7 +166,7 @@ export function ReviewModal({
             </h2>
             <p className="t-body-lg measure mt-7 text-muted">
               {state.status === "sent"
-                ? `Thanks — the review is on our list. ${siteConfig.responseNote}`
+                ? `Thanks — the review is on my list. ${siteConfig.responseNote}`
                 : state.message}
             </p>
             {state.status === "manual" ? (

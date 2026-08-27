@@ -1,7 +1,6 @@
 "use client";
 
 import { cx } from "@/lib/utils";
-import { useCursor } from "@/components/motion/CursorProvider";
 
 /** Underline that wipes in from the left, plus a 2px text nudge. */
 export function AnimatedLink({
@@ -17,15 +16,12 @@ export function AnimatedLink({
   external?: boolean;
   onClick?: () => void;
 }) {
-  const cursor = useCursor();
 
   return (
     <a
       href={href}
       onClick={onClick}
       {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-      onPointerEnter={() => cursor.set("link")}
-      onPointerLeave={() => cursor.reset()}
       className={cx(
         "group relative inline-block transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:translate-x-[2px]",
         className,

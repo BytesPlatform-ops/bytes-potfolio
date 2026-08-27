@@ -6,31 +6,28 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 import { Hero } from "@/components/sections/Hero";
-import { TrustStrip } from "@/components/sections/TrustStrip";
-import { WorkIntro } from "@/components/sections/WorkIntro";
-import { FeaturedOne } from "@/components/portfolio/FeaturedOne";
-import { FeaturedTwo } from "@/components/portfolio/FeaturedTwo";
-import { FeaturedThree } from "@/components/portfolio/FeaturedThree";
-import { ProjectIndex } from "@/components/portfolio/ProjectIndex";
-import { Manifesto } from "@/components/sections/Manifesto";
+import { IdentityStrip } from "@/components/sections/IdentityStrip";
+import { PortfolioArchive } from "@/components/portfolio/PortfolioArchive";
+import { About } from "@/components/sections/About";
 import { Services } from "@/components/sections/Services";
-import { WhyBytes } from "@/components/sections/WhyBytes";
-import { CraftDemo } from "@/components/sections/CraftDemo";
 import { Process } from "@/components/sections/Process";
 import { ResponsiveShowcase } from "@/components/sections/ResponsiveShowcase";
-import { Technology } from "@/components/sections/Technology";
-import { Credibility } from "@/components/sections/Credibility";
-import { OperationalProof } from "@/components/sections/OperationalProof";
-import { Industries } from "@/components/sections/Industries";
-import { ReviewCTA } from "@/components/sections/ReviewCTA";
 import { Faq } from "@/components/sections/Faq";
-import { FinalCTA } from "@/components/sections/FinalCTA";
+import { Contact } from "@/components/sections/Contact";
 
-import { featuredProjects } from "@/data/projects";
-
+/**
+ * The page.
+ *
+ * Half the length it was. Six sections came out — a manifesto, a five-point
+ * "why work with me", a full technology section, an industries grid, a website
+ * audit pitch and a second closing CTA. Every one of them restated something
+ * the work or the About section already said better.
+ *
+ * Colour lands at four planned moments and nowhere else: lime in the marquee,
+ * cobalt across the archive, coral behind About, and near-black plus cobalt
+ * and lime at Contact. The rest is cream and ink so those four register.
+ */
 export default function Home() {
-  const [one, two, three] = featuredProjects;
-
   return (
     <CursorProvider>
       <ModalProvider>
@@ -39,61 +36,32 @@ export default function Home() {
         <Header />
 
         <main id="main">
-          {/* 02 — Hero */}
+          {/* 01 — Baneen, in her own collage */}
           <Hero />
 
-          {/* 03 — Capability / trust */}
-          <TrustStrip />
+          {/* 02 — lime marquee */}
+          <IdentityStrip />
 
-          {/* 04–07 — Selected work */}
-          <div id="work" className="scroll-mt-24 bg-paper">
-            <WorkIntro />
-            {one ? <FeaturedOne project={one} /> : null}
-          </div>
-          {two ? <FeaturedTwo project={two} /> : null}
-          {three ? <FeaturedThree project={three} /> : null}
+          {/* 03 — the work: carousel + all twenty-five */}
+          <PortfolioArchive />
 
-          {/* 08 — Archive */}
-          <ProjectIndex />
+          {/* 04 — coral moment */}
+          <About />
 
-          {/* 09 — Manifesto */}
-          <Manifesto />
-
-          {/* 10 — Services */}
+          {/* 05 — four big words */}
           <Services />
 
-          {/* 11 — Why Bytes */}
-          <WhyBytes />
-
-          {/* 12 — Craft demonstration */}
-          <CraftDemo />
-
-          {/* 13 — Process */}
+          {/* 06 — how this usually goes */}
           <Process />
 
-          {/* 14 — Responsive craft */}
+          {/* 07 — craft, on real work */}
           <ResponsiveShowcase />
 
-          {/* 15 — Technology */}
-          <Technology />
-
-          {/* 16 — Collaboration */}
-          <Credibility />
-
-          {/* 17 — Operational proof */}
-          <OperationalProof />
-
-          {/* 18 — Industries */}
-          <Industries />
-
-          {/* 19 — Website review micro-conversion */}
-          <ReviewCTA />
-
-          {/* 20 — FAQ */}
+          {/* 08 — four questions */}
           <Faq />
 
-          {/* 21 — Final CTA */}
-          <FinalCTA />
+          {/* 09 — near-black moment */}
+          <Contact />
         </main>
 
         <Footer />

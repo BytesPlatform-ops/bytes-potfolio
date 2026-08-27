@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(md5)",
+      "Bash(node esc.mjs)",
+      "Bash(perl -0pi -e 's/\\\\[role=\"dialog\"\\\\]/[role=\"dialog\"][aria-modal=\"true\"]/g' shot.mjs)",
+      "Bash(node dbg.mjs)",
+      "Bash(git worktree *)",
+      "Bash(ln -s /Users/bytes/Documents/GitHub/bytes-potfolio/node_modules /private/tmp/claude-501/-Users-bytes-Documents-GitHub-bytes-potfolio/8853079b-b2f3-4645-aae4-0fe6703ae9bb/scratchpad/head-check/node_modules)",
+      "Bash(sed 's|http://localhost:3000/|http://localhost:3222/|' warn.mjs)",
+      "Bash(curl -sf -o /dev/null http://localhost:3222/)",
+      "Bash(node warn-head.mjs)",
+      "Read(//Users/bytes/Documents/GitHub/bytes-head-check/**)",
+      "Bash(npx next *)",
+      "Bash(node v2.mjs)",
+      "Bash(node now.mjs)",
+      "Bash(node orbit.mjs)",
+      "Bash(node recapture.mjs)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('main'\\), d.get\\('exports'\\)\\)\")",
+      "Bash(sed -i '' 's|/node_modules/sharp/lib/index.js|/node_modules/sharp/dist/index.mjs|' convert.mjs)",
+      "Bash(node convert.mjs)",
+      "Bash(sips -g pixelWidth -g pixelHeight public/portfolio/moooi-desktop.webp)",
+      "Bash(sips -g pixelWidth -g pixelHeight public/portfolio/lusion-desktop.webp)",
+      "Bash(node hover.mjs)"
+    ],
+    "additionalDirectories": [
+      "/Users/bytes/Documents/GitHub/bytes-potfolio"
+    ]
+  }
+}

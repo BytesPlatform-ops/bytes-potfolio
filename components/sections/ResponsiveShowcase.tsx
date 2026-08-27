@@ -40,11 +40,10 @@ export function ResponsiveShowcase() {
             as="h2"
             id="responsive-heading"
             className="t-display max-w-[15ch] text-paper"
-            lines={[<>Designed for every screen,</>, <>not shrunk to fit one.</>]}
+            lines={[<>Looks good here.</>, <>And here. And here.</>]}
           />
-          <p className="t-small measure text-muted md:pb-3">
-            The same project — {project.name} — at three widths. Each one laid out
-            on purpose, not left to a breakpoint to sort out.
+          <p className="note note-ink md:pb-4">
+            because mobile isn&rsquo;t just the smaller desktop version.
           </p>
         </div>
 

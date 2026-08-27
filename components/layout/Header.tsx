@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { siteConfig } from "@/lib/site";
 import { cx } from "@/lib/utils";
-import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ArrowUpRight } from "@/components/ui/Arrow";
 import { useModals } from "@/components/forms/ModalProvider";
-import { useCursor } from "@/components/motion/CursorProvider";
 import { MobileMenu } from "./MobileMenu";
 
 export function Header() {
@@ -15,7 +13,6 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const { openEnquiry } = useModals();
-  const cursor = useCursor();
 
   useMotionValueEvent(scrollY, "change", (v) => {
     setCompact(v > 60);
@@ -46,22 +43,18 @@ export function Header() {
           <a
             href="#top"
             aria-label={`${siteConfig.name} — back to top`}
-            onPointerEnter={() => cursor.set("link")}
-            onPointerLeave={() => cursor.reset()}
             className={cx(
               "group relative z-10 flex items-baseline gap-[0.35em] text-[0.82rem] font-medium tracking-[0.16em] transition-colors duration-300",
               menuOpen ? "text-paper" : "text-ink",
             )}
           >
-            <span>{siteConfig.wordmark.left}</span>
+            <span className="text-[1rem] tracking-[0.12em]">{siteConfig.name}</span>
             <span
               aria-hidden="true"
-              className="text-accent transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[24deg]"
+              className="ml-2.5 hidden text-[0.58rem] normal-case tracking-[0.16em] opacity-45 md:inline"
+              style={{ fontFamily: "var(--font-hand)", letterSpacing: "0.02em", fontSize: "0.82rem" }}
             >
-              /
-            </span>
-            <span className="opacity-55 transition-opacity duration-300 group-hover:opacity-100">
-              {siteConfig.wordmark.right}
+              {siteConfig.discipline}
             </span>
           </a>
 
@@ -72,8 +65,6 @@ export function Header() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    onPointerEnter={() => cursor.set("link")}
-                    onPointerLeave={() => cursor.reset()}
                     className="group relative inline-block py-1 text-[0.92rem] tracking-[-0.01em] text-ink/70 transition-all duration-300 hover:translate-x-[2px] hover:text-ink"
                   >
                     {item.label}
@@ -90,10 +81,18 @@ export function Header() {
           {/* Right side */}
           <div className="flex items-center gap-4">
             <div className="hidden lg:block">
-              <MagneticButton onClick={openEnquiry} size="md">
-                Start a project
-                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </MagneticButton>
+              <button
+                type="button"
+                onClick={openEnquiry}
+                className="group/cta relative inline-flex items-center gap-2 py-1 text-[0.95rem] tracking-[-0.01em] text-ink"
+              >
+                Let&rsquo;s talk
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+                <span
+                  aria-hidden="true"
+                  className="absolute -bottom-0.5 left-0 h-[2px] w-full origin-right scale-x-0 bg-coral transition-transform duration-[420ms] ease-[cubic-bezier(0.76,0,0.24,1)] group-hover/cta:origin-left group-hover/cta:scale-x-100"
+                />
+              </button>
             </div>
 
             <button

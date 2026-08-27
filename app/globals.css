@@ -1,35 +1,45 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   BYTES PLATFORM — DESIGN SYSTEM
-   Ink / Paper / one cobalt accent. Nothing else.
+   DESIGN SYSTEM
+
+   Cream and ink carry the page. Three accents exist and they are rationed:
+   cobalt for structure and links, lime for one loud moment per screen at
+   most, coral for warmth. Roughly 70 / 20 / 7 / 3. If a section reaches for
+   two accents at once, one of them is wrong.
    ========================================================================== */
 
 @theme {
   /* Surfaces --------------------------------------------------------------- */
-  --color-ink: #0a0a0b;
-  --color-ink-soft: #131316;
-  --color-ink-raised: #1c1c20;
-  --color-paper: #f3f0e9;
-  --color-paper-soft: #e8e4da;
-  --color-paper-deep: #dcd7c9;
+  --color-ink: #101010;
+  --color-ink-soft: #161618;
+  --color-ink-raised: #1f1f22;
+  --color-paper: #f2eee3;
+  --color-paper-soft: #e7e3da;
+  --color-paper-deep: #dbd6ca;
 
   /* Accent ----------------------------------------------------------------- */
-  --color-accent: #3e52ff;
+  --color-accent: #3157ff;          /* electric cobalt — the workhorse      */
   /* Accent text on ink only reaches 3:1 — this variant clears AA at 8:1. */
-  --color-accent-soft: #93a2ff;
-  --color-accent-deep: #2032cf;
-  --color-accent-tint: #dfe1ff;
+  --color-accent-soft: #9aabff;
+  --color-accent-deep: #2b45d8;
+  --color-accent-tint: #e2e6ff;
+
+  --color-lime: #c9f84a;            /* one moment per screen, never text on cream */
+  --color-lime-deep: #a8e017;
+  --color-coral: #f34e32;
+  --color-coral-soft: #ffb8a7;
 
   /* Text ------------------------------------------------------------------- */
-  --color-muted: #94949d;        /* muted text on ink   */
-  --color-muted-ink: #6b675e;    /* muted text on paper */
+  --color-muted: #9a978f;        /* muted text on ink   */
+  --color-muted-ink: #77736d;    /* muted text on paper */
 
   /* Type ------------------------------------------------------------------- */
   --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", sans-serif;
   --font-serif: var(--font-instrument), "Iowan Old Style", Georgia, serif;
   --font-mono: var(--font-mono-label), ui-monospace, "SFMono-Regular", monospace;
+  --font-hand: var(--font-hand), "Bradley Hand", cursive;
 
   /* Motion ----------------------------------------------------------------- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -38,10 +48,22 @@
 }
 
 :root {
-  --line-ink: rgba(255, 255, 255, 0.12);
-  --line-paper: rgba(10, 10, 11, 0.14);
+  /* One hairline on paper, one on ink. Nothing else draws a border. */
+  --line-ink: rgba(242, 239, 232, 0.13);
+  --line-paper: rgba(11, 11, 12, 0.14);
+
   --gutter: clamp(1.25rem, 5vw, 5.5rem);
   --shell: 1560px;
+
+  /* Three radii. A fourth value anywhere in the page is a bug. */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 18px;
+
+  /* Vertical rhythm. Every major section steps to one of these. */
+  --step: clamp(5.5rem, 13vh, 13.75rem);
+  --step-lg: clamp(7rem, 17vh, 16rem);
+
   color-scheme: dark;
 }
 
@@ -160,10 +182,10 @@ button {
 }
 
 .section-y {
-  padding-block: clamp(5.5rem, 12vh, 11rem);
+  padding-block: var(--step);
 }
 .section-y-lg {
-  padding-block: clamp(7rem, 17vh, 15rem);
+  padding-block: var(--step-lg);
 }
 
 /* --------------------------------------------------------------------------
@@ -320,7 +342,7 @@ button {
 
 .frame {
   position: relative;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   overflow: hidden;
   background: var(--color-ink-soft);
   box-shadow:
@@ -362,6 +384,832 @@ button {
   text-overflow: ellipsis;
 }
 
+
+/* --------------------------------------------------------------------------
+   Liquid glass
+
+   One material, three sizes: the hero panel, its buttons, its segmented
+   switch. Ivory rather than cobalt — the panel floats over photography and a
+   blue tint would fight every screenshot underneath it. Accent appears only
+   as a hairline on the active segment.
+
+   The recipe is four layers, and all four matter:
+     · a translucent fill that is lighter at the top than the bottom
+     · a real backdrop blur with a little saturation lift
+     · a hairline border, brighter on the lit edge
+     · an inset top highlight, which is what reads as "thickness"
+   -------------------------------------------------------------------------- */
+
+.lg {
+  position: relative;
+  isolation: isolate;
+  color: var(--color-paper);
+  /*
+   * Smoked, not milky. A white glass panel is only legible over dark
+   * artwork, and this one floats over twenty-five screenshots we do not
+   * control — half of them near-white. Tinting the glass toward ink instead
+   * fixes the contrast for all of them at once, and over a cream page it
+   * still reads as the expensive option.
+   */
+  background: linear-gradient(
+    150deg,
+    rgba(22, 22, 28, 0.5) 0%,
+    rgba(12, 12, 17, 0.62) 55%,
+    rgba(9, 9, 13, 0.68) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(30px) saturate(118%);
+  backdrop-filter: blur(30px) saturate(118%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.3),
+    0 28px 70px -30px rgba(0, 0, 0, 0.85);
+}
+
+/* Corner specular. A real pane catches the light in one place, not all over. */
+.lg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 8% 0%,
+    rgba(255, 255, 255, 0.13),
+    rgba(255, 255, 255, 0) 58%
+  );
+}
+
+/*
+ * Ivory variant. The hero pill floats over cream paper, where the smoked
+ * pane above would read as a hole punched in the page. Same construction,
+ * inverted: warm translucent ivory, ink type, one hairline of cobalt.
+ */
+.lg-ivory {
+  color: var(--color-ink);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 253, 248, 0.82) 0%,
+    rgba(246, 243, 235, 0.66) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(18px) saturate(115%);
+  backdrop-filter: blur(18px) saturate(115%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.95),
+    0 1px 2px rgba(11, 11, 12, 0.05),
+    0 18px 40px -22px rgba(11, 11, 12, 0.4);
+}
+.lg-ivory::before {
+  background: radial-gradient(
+    120% 90% at 12% 0%,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0) 60%
+  );
+}
+
+/* ---- the hero panel ---- */
+
+.lg-panel {
+  border-radius: var(--r-lg);
+  transition:
+    transform 700ms var(--ease-out-expo),
+    box-shadow 700ms var(--ease-out-expo),
+    border-color 700ms var(--ease-out-expo);
+}
+.lg-panel:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.3),
+    0 38px 84px -30px rgba(0, 0, 0, 0.9);
+}
+
+/* ---- buttons ---- */
+
+.lg-btn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition:
+    background-color 480ms var(--ease-out-expo),
+    border-color 480ms var(--ease-out-expo),
+    color 480ms var(--ease-out-expo),
+    box-shadow 480ms var(--ease-out-expo);
+}
+
+/* Primary: reads as solid ivory, because the one thing you want clicked
+   should not also be the most transparent thing on screen. */
+.lg-btn-primary {
+  background: rgba(243, 240, 233, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: var(--color-ink);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    0 12px 30px -14px rgba(6, 8, 18, 0.7);
+}
+.lg-btn-primary:hover,
+.lg-btn-primary:focus-visible {
+  background: #fff;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 1),
+    0 16px 38px -14px rgba(6, 8, 18, 0.8);
+}
+
+/* A single slow highlight pass on hover. Once, diagonally, then gone. */
+.lg-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: -60% -25%;
+  pointer-events: none;
+  background: linear-gradient(
+    104deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 62%
+  );
+  transform: translate3d(-70%, 0, 0);
+  opacity: 0;
+}
+.lg-btn-primary:hover::after,
+.lg-btn-primary:focus-visible::after {
+  animation: lg-sheen 900ms var(--ease-out-quart);
+}
+@keyframes lg-sheen {
+  0% {
+    transform: translate3d(-70%, 0, 0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate3d(70%, 0, 0);
+    opacity: 0;
+  }
+}
+
+.lg-btn-ghost {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(243, 240, 233, 0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+.lg-btn-ghost:hover,
+.lg-btn-ghost:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.32);
+  color: #fff;
+}
+
+.lg-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 999px;
+}
+
+/* ---- segmented Desktop / Mobile switch ---- */
+
+.lg-seg {
+  position: relative;
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(12, 12, 16, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+.lg-seg-pill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 999px;
+  background: rgba(243, 240, 233, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 12px -6px rgba(6, 8, 18, 0.8);
+  transition:
+    transform 560ms var(--ease-out-expo),
+    width 560ms var(--ease-out-expo);
+}
+
+/* ---- the hero stage ---- */
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  /*
+   * Dissolve the edge that faces the copy so the hero reads as one surface
+   * rather than a column of text beside a picture. Which edge that is depends
+   * on the layout: stacked, the copy is above, so the top feathers; side by
+   * side, the copy is to the left, so the left feathers.
+   */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 5%,
+    #000 16%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 5%,
+    #000 16%,
+    #000 100%
+  );
+}
+
+@media (min-width: 1024px) {
+  .stage {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.35) 6%,
+      #000 20%,
+      #000 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.35) 6%,
+      #000 20%,
+      #000 100%
+    );
+  }
+}
+
+.stage-plate {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Grade under the panel so ivory type has something to sit on, whatever the
+   screenshot happens to be doing down there. */
+.stage-grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      75% 60% at 18% 92%,
+      rgba(4, 5, 12, 0.72),
+      rgba(4, 5, 12, 0) 72%
+    ),
+    linear-gradient(
+      to top,
+      rgba(4, 5, 12, 0.6) 0%,
+      rgba(4, 5, 12, 0.24) 30%,
+      rgba(4, 5, 12, 0) 60%
+    ),
+    linear-gradient(
+      100deg,
+      rgba(4, 5, 12, 0.42) 0%,
+      rgba(4, 5, 12, 0.1) 34%,
+      rgba(4, 5, 12, 0) 64%
+    );
+}
+
+/* Film grain. A still 160px tile, tiled — no animation, no canvas, no cost.
+   This is the whole of the "atmosphere" budget and it is deliberately almost
+   invisible; you should only notice it if you turn it off. */
+.stage-grain {
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* The light that crosses the plate as one project hands over to the next.
+   Driven by an animation, not a particle system. */
+@keyframes stage-sweep {
+  0% {
+    transform: translate3d(-120%, 0, 0);
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(120%, 0, 0);
+    opacity: 0;
+  }
+}
+.stage-sweep {
+  position: absolute;
+  inset: -20% -40%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.13) 50%,
+    transparent 60%
+  );
+  animation: stage-sweep 1500ms var(--ease-out-quart);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   Hero orbit
+   A tilted ellipse of project plates that passes behind the headline.
+   Geometry lives in HeroOrbit.tsx; this is only the surface treatment.
+   -------------------------------------------------------------------------- */
+
+.orbit-zone {
+  perspective: 1500px;
+  perspective-origin: 50% 46%;
+  pointer-events: none;
+}
+
+.orbit-ring {
+  transform-style: preserve-3d;
+}
+
+.orbit-plate {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+/*
+ * Hover shell.
+ *
+ * The element above this one carries the orbit transform, rewritten every
+ * frame. Nothing here may touch that: a hover rule on the same node replaces
+ * the whole matrix and the plate leaves the ring. So the lift lives on its
+ * own layer, and the two compose instead of fighting.
+ */
+.orbit-hover {
+  transform-style: preserve-3d;
+  transition: transform 280ms var(--ease-out-expo);
+}
+.orbit-plate:hover .orbit-hover {
+  transform: translate3d(0, -3px, 0) scale(1.015);
+}
+
+/* A screen, not a mockup: the shot, a radius, and enough shadow to sit off
+   the paper. No chrome bar, no bezel, no laptop. */
+.orbit-plate-face {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--color-ink-soft);
+  box-shadow:
+    0 0 0 1px rgba(11, 11, 12, 0.07),
+    0 24px 48px -28px rgba(11, 11, 12, 0.42);
+  transition: box-shadow 280ms var(--ease-out-expo);
+}
+.orbit-plate:hover .orbit-plate-face {
+  box-shadow:
+    0 0 0 1px rgba(11, 11, 12, 0.1),
+    0 18px 50px -22px rgba(11, 11, 12, 0.3);
+}
+
+/* The one thing that moves inside the card. 1%, and only on hover. */
+.orbit-plate-shot {
+  transform: scale(1);
+  transition: transform 420ms var(--ease-out-expo);
+}
+.orbit-plate:hover .orbit-plate-shot {
+  transform: scale(1.01);
+}
+
+/* Touch has no hover, and a sticky :hover left behind by a tap would park a
+   plate out of the ring until the next tap. */
+@media (hover: none), (pointer: coarse) {
+  .orbit-plate:hover .orbit-hover,
+  .orbit-plate:hover .orbit-plate-shot {
+    transform: none;
+  }
+}
+
+/* Edge fade only.
+   A radial wash across the middle greys out the very screenshots the ring
+   exists to show, so the headline is protected by the corridor fade in the
+   geometry instead. All this does is stop plates tangling with the header
+   and the scroll rail. */
+.orbit-edge-fade {
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    var(--color-paper) 0%,
+    color-mix(in srgb, var(--color-paper) 45%, transparent) 5%,
+    transparent 11%,
+    transparent 88%,
+    color-mix(in srgb, var(--color-paper) 55%, transparent) 95%,
+    var(--color-paper) 100%
+  );
+}
+
+
+/* --------------------------------------------------------------------------
+   Portfolio gallery — hologram, floor light, controls
+   Cobalt and ivory only. Every effect is transient or tied to the active
+   project, so the section reads as a lit exhibition rather than a HUD.
+   -------------------------------------------------------------------------- */
+
+/* ---- the hologram origin ---- */
+
+.holo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  isolation: isolate;
+  color: var(--color-ink);
+  background: radial-gradient(
+    circle at 50% 30%,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(242, 239, 232, 0.7) 44%,
+    rgba(242, 239, 232, 0.26) 100%
+  );
+  border: 1px solid rgba(11, 11, 12, 0.13);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 1px 2px rgba(11, 11, 12, 0.09),
+    0 10px 26px -16px rgba(73, 103, 255, 0.45);
+  transition:
+    transform 520ms var(--ease-out-expo),
+    box-shadow 520ms var(--ease-out-expo),
+    border-color 520ms var(--ease-out-expo);
+}
+
+/* one thin outer ring */
+.holo::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(73, 103, 255, 0.26);
+  transition: inset 620ms var(--ease-out-expo), opacity 620ms var(--ease-out-expo);
+  pointer-events: none;
+}
+
+/* one partially rotating arc */
+.holo::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  border-top-color: rgba(73, 103, 255, 0.58);
+  border-right-color: rgba(73, 103, 255, 0.14);
+  animation: holo-sweep 6s linear infinite;
+  pointer-events: none;
+}
+@keyframes holo-sweep { to { transform: rotate(360deg); } }
+
+.holo:hover,
+.holo:focus-visible {
+  transform: scale(1.06);
+  border-color: rgba(73, 103, 255, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 14px 34px -14px rgba(73, 103, 255, 0.6);
+}
+.holo:hover::before { inset: 8px; }
+
+/* The aura swells while the sculpture is being built, then goes quiet. */
+.holo-aura {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 240px;
+  height: 240px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgba(73, 103, 255, 0.24),
+    rgba(154, 171, 255, 0.08) 48%,
+    transparent 100%
+  );
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 520ms var(--ease-out-expo), transform 520ms var(--ease-out-expo);
+}
+.holo-aura[data-hot="true"] {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.25);
+}
+
+/* ---- floor light ----
+   The plinth the active project stands on. Two layers: a wide ivory pool and
+   a tighter cobalt core, so the tint sits at the edge rather than washing the
+   whole pool blue. */
+
+.floor-pool {
+  position: absolute;
+  left: 50%;
+  border-radius: 999px;
+  pointer-events: none;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 255, 255, 0.98),
+    rgba(255, 253, 247, 0.55) 42%,
+    rgba(242, 239, 232, 0) 100%
+  );
+  filter: blur(18px);
+  transition:
+    opacity 620ms var(--ease-out-expo),
+    width 620ms var(--ease-out-expo),
+    height 620ms var(--ease-out-expo);
+}
+
+.floor-core {
+  position: absolute;
+  left: 50%;
+  border-radius: 999px;
+  pointer-events: none;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    closest-side,
+    rgba(73, 103, 255, 0.26),
+    rgba(73, 103, 255, 0.08) 52%,
+    transparent 100%
+  );
+  filter: blur(22px);
+  transition:
+    opacity 620ms var(--ease-out-expo),
+    width 620ms var(--ease-out-expo);
+}
+
+/* ---- controls ---- */
+
+/* Warm glass, not grey circles. Ivory body, hairline, one cobalt detail. */
+.gal-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  color: var(--color-ink);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.72),
+    rgba(242, 239, 232, 0.44)
+  );
+  border: 1px solid rgba(11, 11, 12, 0.13);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 20px -12px rgba(11, 11, 12, 0.35);
+  transition:
+    transform 420ms var(--ease-out-expo),
+    border-color 420ms var(--ease-out-expo),
+    box-shadow 420ms var(--ease-out-expo);
+}
+/* the cobalt detail: a quarter-arc on the leading edge */
+.gal-btn::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  border-top-color: rgba(73, 103, 255, 0.42);
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out-expo), transform 620ms var(--ease-out-expo);
+  pointer-events: none;
+}
+.gal-btn:hover,
+.gal-btn:focus-visible {
+  transform: scale(1.045);
+  border-color: rgba(11, 11, 12, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 10px 28px -12px rgba(11, 11, 12, 0.4);
+}
+.gal-btn:hover::after,
+.gal-btn:focus-visible::after {
+  opacity: 1;
+  transform: rotate(180deg);
+}
+.gal-btn:active { transform: scale(0.985); }
+
+/* ---- scrubber ---- */
+
+.scrub {
+  position: relative;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+.scrub-track {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background: rgba(11, 11, 12, 0.14);
+}
+.scrub-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--color-accent);
+  transition: width 620ms var(--ease-out-expo);
+}
+.scrub-head {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  transform: translateY(-50%);
+  transition: left 620ms var(--ease-out-expo), transform 300ms var(--ease-out-expo);
+  box-shadow: 0 0 0 4px rgba(73, 103, 255, 0.12);
+}
+.scrub:hover .scrub-head { transform: translateY(-50%) scale(1.3); }
+
+/* the number that follows the pointer along the track */
+.scrub-tip {
+  position: absolute;
+  bottom: 100%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out-expo);
+}
+.scrub[data-scrubbing="true"] .scrub-tip,
+.scrub:hover .scrub-tip { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .holo::after { animation: none; }
+}
+
+
+/* --------------------------------------------------------------------------
+   PERSONALITY MOTIFS
+
+   Six of them, and that is the whole vocabulary. Every playful mark on this
+   site is one of these — the restraint is what keeps it reading as art
+   direction rather than decoration. Rule of thumb: at most two per screen.
+   -------------------------------------------------------------------------- */
+
+/* 1. The margin note. Small, tilted, never load-bearing information. */
+.note {
+  font-family: var(--font-hand);
+  font-size: clamp(0.95rem, 1.25vw, 1.3rem);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  color: var(--color-muted-ink);
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+.note-ink {
+  color: rgba(243, 239, 229, 0.62);
+}
+.note-accent {
+  color: var(--color-accent);
+}
+
+/* 2. Marker underline. Drawn on scroll-in, not on load. */
+.marker {
+  position: relative;
+  display: inline-block;
+}
+.marker::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: 0.02em;
+  height: 0.32em;
+  background: var(--color-lime);
+  z-index: -1;
+  transform: scaleX(var(--marker, 1)) rotate(-0.6deg);
+  transform-origin: left center;
+  transition: transform 900ms var(--ease-out-expo);
+  border-radius: 2px;
+}
+
+/* 3. Sticker. A rotated label with a hard edge — for indices and tags. */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.32em 0.75em;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  transform: rotate(-2deg);
+}
+.sticker-lime {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+.sticker-coral {
+  background: var(--color-coral);
+  color: var(--color-ink);
+}
+.sticker-accent {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* 4. Blob. The soft colour shape that sits behind the portrait. */
+.blob {
+  position: absolute;
+  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+
+/* 5. Grain. One tiled SVG over the whole page at 3.5%. Costs nothing and is
+      the single biggest reason the page stops looking like a template. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 6. Tilt. Applied to a single element per section, never a group. */
+.tilt-l { transform: rotate(-1.6deg); }
+.tilt-r { transform: rotate(1.6deg); }
+
+/* Oversized index numeral that bleeds behind content. */
+.ghost-index {
+  font-weight: 500;
+  line-height: 0.72;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-paper);
+  pointer-events: none;
+  user-select: none;
+}
+.ghost-index-ink {
+  -webkit-text-stroke-color: var(--line-ink);
+}
+
+
+/* --------------------------------------------------------------------------
+   Hero text inversion
+   The headline sits over a moving ring of screenshots, so a fixed colour is
+   readable against paper or against a dark plate but never both. Painting the
+   type in paper and compositing it with `difference` makes the contrast fall
+   out of whatever is behind it: over cream |242-242| resolves to black, over a
+   dark plate |20-242| resolves to warm ivory. No sampling, no JS, per pixel.
+
+   This only works while nothing between the type and the ring opens a stacking
+   context — see the z-index notes in Hero.tsx before adding one.
+   -------------------------------------------------------------------------- */
+
+.hero-invert {
+  position: relative;
+  /* Lifted into its own paint step. At `z-auto` the type shares a step with
+     the ring and the collage bed and ends up composited against the wrong
+     thing; an explicit layer puts the whole hero backdrop underneath it. */
+  z-index: 5;
+  color: var(--color-paper);
+  mix-blend-mode: difference;
+}
+
+/* Reduced motion keeps the effect (it is contrast, not movement), but if the
+   browser cannot blend, the fallback has to stay legible on paper. */
+@supports not (mix-blend-mode: difference) {
+  .hero-invert {
+    color: var(--color-ink);
+    mix-blend-mode: normal;
+  }
+}
+
 } /* end @layer components */
 
 /* --------------------------------------------------------------------------
@@ -396,13 +1244,24 @@ button {
   top: 1rem;
 }
 
-/* Hide the native cursor only where the custom one is genuinely active. */
+/* --------------------------------------------------------------------------
+   Custom cursor
+   -------------------------------------------------------------------------- */
+
+/* Coarse pointers never see it, whatever the JS thinks. */
+@media (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+/* Hide the native cursor only once the custom one is actually on screen. */
 @media (hover: hover) and (pointer: fine) {
   html.has-custom-cursor,
   html.has-custom-cursor * {
     cursor: none;
   }
-  /* Never remove the pointer from things you type into. */
+  /* Never remove the pointer from things you type into or select. */
   html.has-custom-cursor input,
   html.has-custom-cursor textarea,
   html.has-custom-cursor select,
@@ -430,5 +1289,12 @@ button {
   .marquee-track {
     animation: none !important;
     transform: none !important;
+  }
+  .stage-sweep,
+  .stage-grain {
+    display: none;
+  }
+  .lg-btn-primary::after {
+    animation: none !important;
   }
 }

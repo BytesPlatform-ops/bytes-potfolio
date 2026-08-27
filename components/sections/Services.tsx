@@ -1,188 +1,140 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
-import { services } from "@/data/services";
-import { SectionLabel } from "@/components/ui/SectionLabel";
 import { TextReveal } from "@/components/motion/TextReveal";
-import { useCursor } from "@/components/motion/CursorProvider";
-import { ServiceVisual } from "./ServiceVisual";
 import { cx } from "@/lib/utils";
 import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
 
+/**
+ * Things I'm good at.
+ *
+ * Four words, not six service rows. Hovering one swaps the crop on the right
+ * and the accent on the left, so the section is browsed rather than read —
+ * which is the point of replacing a capability list with a set of verbs.
+ */
+const AREAS = [
+  {
+    id: "design",
+    word: "Design",
+    does: "web design · UI/UX · creative direction",
+    accent: "var(--color-accent)",
+    shot: "/portfolio/cuberto-desktop.webp",
+  },
+  {
+    id: "code",
+    word: "Code",
+    does: "frontend · web apps · CMS",
+    accent: "var(--color-lime-deep)",
+    shot: "/portfolio/terminal-industries-desktop.webp",
+  },
+  {
+    id: "motion",
+    word: "Motion",
+    does: "micro-interactions · scroll · creative dev",
+    accent: "var(--color-coral)",
+    shot: "/portfolio/lusion-desktop.webp",
+  },
+  {
+    id: "commerce",
+    word: "Commerce",
+    does: "Shopify · e-commerce · conversion",
+    accent: "var(--color-accent)",
+    shot: "/portfolio/flowers-for-society-desktop.webp",
+  },
+];
+
 export function Services() {
   const [active, setActive] = useState(0);
-  const [openMobile, setOpenMobile] = useState<number | null>(0);
-  const cursor = useCursor();
   const reduce = useSafeReducedMotion();
+  const current = AREAS[active];
 
   return (
-    <section
-      id="services"
-      className="section-y relative bg-paper"
-      aria-labelledby="services-heading"
-    >
+    <section id="skills" className="section-y scroll-mt-24 bg-paper" aria-labelledby="skills-heading">
       <div className="shell-wide">
-        <SectionLabel index="02">What we do</SectionLabel>
-        <TextReveal
-          as="h2"
-          id="services-heading"
-          className="t-display mt-7 max-w-[13ch] text-ink"
-          lines={[<>Strategy to screen.</>, <>One team.</>]}
-        />
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <span className="sticker sticker-accent">Skills</span>
+            <TextReveal
+              as="h2"
+              id="skills-heading"
+              className="t-display mt-6 max-w-[13ch] text-ink"
+              lines={[<>Things</>, <>I do.</>]}
+            />
+          </div>
+          <p className="note mb-2">pick one →</p>
+        </div>
 
-        <div className="mt-[clamp(3rem,7vh,5.5rem)] grid grid-cols-1 gap-x-8 lg:grid-cols-12">
-          {/* ---- Desktop list (40%) ---- */}
-          <div className="hidden lg:col-span-5 lg:block">
-            <ul className="border-t border-[var(--line-paper)]">
-              {services.map((s, i) => {
-                const on = active === i;
-                return (
-                  <li key={s.id} className="border-b border-[var(--line-paper)]">
-                    <button
-                      type="button"
-                      onPointerEnter={() => {
-                        setActive(i);
-                        cursor.set("link");
+        <div className="mt-[clamp(2.5rem,6vh,4rem)] grid grid-cols-1 gap-x-[clamp(2rem,4vw,4rem)] gap-y-8 lg:grid-cols-12">
+          {/* the words */}
+          <ul className="lg:col-span-7">
+            {AREAS.map((a, i) => {
+              const on = i === active;
+              return (
+                <li key={a.id} className="border-b border-[var(--line-paper)]">
+                  <button
+                    type="button"
+                    onPointerEnter={() => setActive(i)}
+                    onFocus={() => setActive(i)}
+                    onClick={() => setActive(i)}
+                    aria-current={on}
+                    className="group block w-full py-[clamp(1rem,2.4vh,1.9rem)] text-left"
+                  >
+                    <span
+                      className={cx(
+                        "block font-medium leading-[0.9] tracking-[-0.05em] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                        on ? "translate-x-2" : "text-ink/30",
+                      )}
+                      style={{
+                        fontSize: "clamp(2.2rem,6.4vw,5rem)",
+                        color: on ? a.accent : undefined,
                       }}
-                      onPointerLeave={() => cursor.reset()}
-                      onFocus={() => setActive(i)}
-                      aria-pressed={on}
-                      className="group block w-full py-6 text-left"
                     >
-                      <span className="flex items-baseline gap-5">
-                        <span
-                          className={cx(
-                            "t-meta w-6 shrink-0 transition-colors duration-300",
-                            on ? "text-accent" : "text-muted-ink",
-                          )}
-                        >
-                          {s.number}
-                        </span>
-                        <span
-                          className={cx(
-                            "text-[clamp(1.5rem,2.1vw,2.1rem)] leading-tight tracking-[-0.03em] transition-all duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-                            on
-                              ? "translate-x-2.5 text-ink"
-                              : "text-ink/45 group-hover:translate-x-1.5 group-hover:text-ink/80",
-                          )}
-                        >
-                          {s.title}
-                        </span>
-                      </span>
+                      {a.word}
+                    </span>
+                    <span
+                      className={cx(
+                        "t-label mt-2 block overflow-hidden text-muted-ink transition-all duration-500",
+                        on ? "max-h-10 translate-x-2 opacity-100" : "max-h-0 opacity-0",
+                      )}
+                    >
+                      {a.does}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
 
-                      <AnimatePresence initial={false}>
-                        {on ? (
-                          <motion.span
-                            className="block overflow-hidden"
-                            initial={reduce ? false : { height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={reduce ? undefined : { height: 0, opacity: 0 }}
-                            transition={{
-                              height: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
-                              opacity: { duration: 0.35, delay: 0.06 },
-                            }}
-                          >
-                            <span className="t-body measure block pl-11 pt-4 text-muted-ink">
-                              {s.blurb}
-                            </span>
-                            <span className="flex flex-wrap gap-x-5 gap-y-1.5 pl-11 pt-5">
-                              {s.points.map((p) => (
-                                <span key={p} className="t-meta text-muted-ink">
-                                  {p}
-                                </span>
-                              ))}
-                            </span>
-                          </motion.span>
-                        ) : null}
-                      </AnimatePresence>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          {/* ---- Visual (60%) ---- */}
-          <div className="hidden lg:col-span-6 lg:col-start-7 lg:block">
-            <div className="sticky top-[18vh]">
-              <ServiceVisual index={active} />
+          {/* the crop */}
+          <div className="lg:col-span-5">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--r-md)] bg-ink-soft tilt-r">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={current.id}
+                  className="absolute inset-0"
+                  initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.06 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
+                  transition={{ duration: reduce ? 0.2 : 0.7, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Image
+                    src={current.shot}
+                    alt=""
+                    fill
+                    quality={72}
+                    sizes="(max-width: 1024px) 92vw, 34vw"
+                    className="object-cover object-top"
+                  />
+                </motion.div>
+              </AnimatePresence>
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1.5"
+                style={{ background: current.accent }}
+              />
             </div>
-          </div>
-
-          {/* ---- Mobile accordion ---- */}
-          <div className="lg:hidden">
-            <ul className="border-t border-[var(--line-paper)]">
-              {services.map((s, i) => {
-                const on = openMobile === i;
-                return (
-                  <li key={s.id} className="border-b border-[var(--line-paper)]">
-                    <button
-                      type="button"
-                      onClick={() => setOpenMobile(on ? null : i)}
-                      aria-expanded={on}
-                      className="flex w-full items-baseline gap-4 py-6 text-left"
-                    >
-                      <span
-                        className={cx(
-                          "t-meta w-6 shrink-0",
-                          on ? "text-accent" : "text-muted-ink",
-                        )}
-                      >
-                        {s.number}
-                      </span>
-                      <span className="flex-1 text-[1.5rem] leading-tight tracking-[-0.03em] text-ink">
-                        {s.title}
-                      </span>
-                      <span
-                        aria-hidden="true"
-                        className={cx(
-                          "mt-2 block h-3 w-3 shrink-0 transition-transform duration-[380ms]",
-                          on ? "rotate-45" : "",
-                        )}
-                      >
-                        <span className="absolute h-px w-3 translate-y-1.5 bg-ink/60" />
-                        <span
-                          className={cx(
-                            "absolute h-3 w-px translate-x-1.5 bg-ink/60 transition-opacity duration-300",
-                            on ? "opacity-0" : "opacity-100",
-                          )}
-                        />
-                      </span>
-                    </button>
-
-                    <AnimatePresence initial={false}>
-                      {on ? (
-                        <motion.div
-                          className="overflow-hidden"
-                          initial={reduce ? false : { height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={reduce ? undefined : { height: 0, opacity: 0 }}
-                          transition={{
-                            height: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
-                            opacity: { duration: 0.3 },
-                          }}
-                        >
-                          <div className="pb-8 pl-10">
-                            <p className="t-body text-muted-ink">{s.blurb}</p>
-                            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-1.5">
-                              {s.points.map((p) => (
-                                <span key={p} className="t-meta text-muted-ink">
-                                  {p}
-                                </span>
-                              ))}
-                            </div>
-                            <div className="mt-7">
-                              <ServiceVisual index={i} compact />
-                            </div>
-                          </div>
-                        </motion.div>
-                      ) : null}
-                    </AnimatePresence>
-                  </li>
-                );
-              })}
-            </ul>
           </div>
         </div>
       </div>

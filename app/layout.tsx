@@ -1,6 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from "next/font/google";
-import { siteConfig } from "@/lib/site";
+import {
+  Inter_Tight,
+  Instrument_Serif,
+  JetBrains_Mono,
+  Caveat,
+} from "next/font/google";
+import { siteConfig, me } from "@/lib/site";
 import { Analytics } from "@/components/analytics/Analytics";
 import "./globals.css";
 
@@ -17,6 +22,14 @@ const instrument = Instrument_Serif({
   display: "swap",
   weight: "400",
   style: ["normal", "italic"],
+});
+
+/** The margin-note face. Used ONLY for small handwritten asides — never UI. */
+const hand = Caveat({
+  subsets: ["latin"],
+  variable: "--font-hand",
+  display: "swap",
+  weight: ["500", "600"],
 });
 
 const monoLabel = JetBrains_Mono({
@@ -37,11 +50,13 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   alternates: { canonical: "/" },
   keywords: [
-    "web design studio",
-    "website development",
+    "freelance web designer",
+    "freelance web developer",
+    "independent designer developer",
+    "website design",
     "UI UX design",
+    "creative development",
     "web application development",
-    "ecommerce website design",
     "website redesign",
   ],
   authors: [{ name: siteConfig.name }],
@@ -85,22 +100,27 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const organizationSchema = {
+/**
+ * Person, not Organization. This is one freelancer: claiming an organisation
+ * in structured data would be a straightforward misrepresentation to search
+ * engines. No address or registration data — none exists to state.
+ */
+const personSchema = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: siteConfig.name,
+  "@type": "Person",
+  name: me.name,
   url: siteConfig.url,
   email: siteConfig.email,
-  telephone: siteConfig.phone,
+  jobTitle: me.role,
   description: siteConfig.description,
-  serviceType: [
+  knowsAbout: [
     "Website Design",
-    "Web Development",
+    "Frontend Development",
     "UI/UX Design",
-    "E-commerce Development",
-    "Web Application Development",
+    "Creative Development",
+    "Web Applications",
+    "E-commerce",
   ],
-  areaServed: "Worldwide",
 };
 
 export default function RootLayout({
@@ -109,16 +129,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${interTight.variable} ${instrument.variable} ${monoLabel.variable}`}
+      className={`${interTight.variable} ${instrument.variable} ${monoLabel.variable} ${hand.variable}`}
     >
-      <body>
+      <body className="grain">
         <a className="skip-link t-label" href="#main">
           Skip to content
         </a>
         {children}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
         <Analytics />
       </body>

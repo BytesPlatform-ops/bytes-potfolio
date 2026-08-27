@@ -3,7 +3,6 @@
 import { useId, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cx } from "@/lib/utils";
-import { useCursor } from "@/components/motion/CursorProvider";
 import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
 
 export type AccordionItem = { q: string; a: string };
@@ -29,7 +28,6 @@ export function Accordion({ items }: { items: AccordionItem[] }) {
   const [open, setOpen] = useState<number | null>(0);
   const baseId = useId();
   const reduce = useSafeReducedMotion();
-  const cursor = useCursor();
 
   return (
     <div className="border-t border-[var(--line-paper)]">
@@ -47,8 +45,6 @@ export function Accordion({ items }: { items: AccordionItem[] }) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                onPointerEnter={() => cursor.set("link")}
-                onPointerLeave={() => cursor.reset()}
                 className="group flex w-full items-start justify-between gap-6 py-7 text-left md:py-9"
               >
                 <span

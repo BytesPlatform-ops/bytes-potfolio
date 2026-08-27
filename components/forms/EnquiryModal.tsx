@@ -56,8 +56,8 @@ export function EnquiryModal({
 
   const validateFinal = () => {
     const e: Record<string, string> = {};
-    if (!form.name.trim()) e.name = "We need something to call you.";
-    if (!form.email.trim()) e.email = "An email address, so we can reply.";
+    if (!form.name.trim()) e.name = "I need something to call you.";
+    if (!form.email.trim()) e.email = "An email address, so I can reply.";
     else if (!isEmail(form.email)) e.email = "That email doesn't look right.";
     if (!form.details.trim() || form.details.trim().length < 12)
       e.details = "A sentence or two about the project helps a lot.";
@@ -95,19 +95,19 @@ export function EnquiryModal({
         <aside className="relative flex flex-col justify-between border-b border-[var(--line-ink)] px-[var(--gutter)] pb-10 pt-24 lg:border-b-0 lg:border-r lg:pb-14 lg:pt-[13vh]">
           <div>
             <span className="t-label text-muted">
-              {siteConfig.wordmark.left} / {siteConfig.wordmark.right}
+              {siteConfig.name}
             </span>
             <h2
               id="enquiry-title"
               className="t-display mt-8 max-w-[13ch] text-paper"
             >
-              Tell us what
+              Alright, what
               <br />
-              you&rsquo;re <span className="serif-i">building.</span>
+              are we <span className="serif-i">making?</span>
             </h2>
             <p className="t-body measure mt-7 text-muted">
-              Three short steps. No sales sequence afterwards — a real person reads
-              this and writes back.
+              Three short steps. It comes straight to me, and I write back
+              myself — no sales sequence afterwards.
             </p>
           </div>
 
@@ -118,12 +118,6 @@ export function EnquiryModal({
               className="t-body block text-paper transition-colors hover:text-accent"
             >
               {siteConfig.email}
-            </a>
-            <a
-              href={`tel:${siteConfig.phoneHref}`}
-              className="t-body mt-1 block text-muted transition-colors hover:text-paper"
-            >
-              {siteConfig.phone}
             </a>
             <p className="t-meta mt-6 text-muted">{siteConfig.responseNote}</p>
           </div>
@@ -202,7 +196,7 @@ export function EnquiryModal({
                         What&rsquo;s your approximate project size?
                       </h3>
                       <p className="t-meta mb-8 text-muted">
-                        Rough is fine. It just tells us what scope to talk about.
+                        Rough is fine. It just tells me what scope to talk about.
                       </p>
                       <ChoiceGrid
                         legend="Budget range"
@@ -238,7 +232,7 @@ export function EnquiryModal({
                   {step === 2 ? (
                     <motion.div key="s2" {...slide}>
                       <h3 className="t-sub mb-9 text-paper">
-                        Where do we send the reply?
+                        Where should I send the reply?
                       </h3>
                       <div className="grid gap-8 sm:grid-cols-2">
                         <Field
@@ -320,7 +314,7 @@ export function EnquiryModal({
                           <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
                             {state.status === "sending"
                               ? "Sending…"
-                              : "Send project enquiry"}
+                              : "Send it"}
                           </span>
                           <ArrowUpRight className="relative z-10 h-4 w-4 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white" />
                         </button>
@@ -357,7 +351,7 @@ export function EnquiryModal({
               </h3>
               <p className="t-body-lg measure mt-7 text-muted">
                 {state.status === "sent"
-                  ? `Your enquiry is with us. ${siteConfig.responseNote}`
+                  ? `Thanks — I'll take a look and get back to you. ${siteConfig.responseNote}`
                   : state.message}
               </p>
 

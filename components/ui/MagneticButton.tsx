@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { cx } from "@/lib/utils";
-import { useCursor } from "@/components/motion/CursorProvider";
 import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
 
 type Common = {
@@ -41,25 +40,26 @@ export function MagneticButton({
 }: Props) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useSafeReducedMotion();
-  const cursor = useCursor();
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const x = useSpring(mx, { stiffness: 320, damping: 22, mass: 0.6 });
   const y = useSpring(my, { stiffness: 320, damping: 22, mass: 0.6 });
 
+  /** Capped hard: precision, not travel. The button is not a toy. */
+  const clamp = (v: number, max = 3) => Math.max(-max, Math.min(max, v));
+
   const onMove = (e: React.PointerEvent) => {
     if (reduce || !ref.current) return;
     if (e.pointerType !== "mouse") return;
     const r = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - (r.left + r.width / 2)) * strength);
-    my.set((e.clientY - (r.top + r.height / 2)) * strength * 0.6);
+    mx.set(clamp((e.clientX - (r.left + r.width / 2)) * strength));
+    my.set(clamp((e.clientY - (r.top + r.height / 2)) * strength * 0.6, 2));
   };
 
   const onLeave = () => {
     mx.set(0);
     my.set(0);
-    cursor.reset();
   };
 
   const skin =
@@ -83,13 +83,17 @@ export function MagneticButton({
 
   return (
     <Comp
+      data-cursor="cta"
+      /* Every filled variant paints ink or accent under the pointer on hover,
+         so the cursor must invert to ivory the moment it arrives — sampling
+         the background mid-transition would race the fill. */
+      data-cursor-theme={variant === "ghost" ? undefined : "dark"}
       // @ts-expect-error — motion narrows the ref union; both are HTMLElement.
       ref={ref}
       className={cx(base, sizes[size], skin, className)}
       style={{ x, y }}
       onPointerMove={onMove}
       onPointerLeave={onLeave}
-      onPointerEnter={() => cursor.set("link")}
       {...domProps}
     >
       {/* lateral fill */}
