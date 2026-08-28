@@ -114,14 +114,8 @@ export function MobileMenu({
           >
             <div className="rule rule-ink mb-7" />
             <a
-              href={`mailto:${siteConfig.email}`}
-              className="t-body block text-paper"
-            >
-              {siteConfig.email}
-            </a>
-            <a
               href={siteConfig.social.linkedin}
-              className="t-label mt-6 inline-block text-muted"
+              className="t-label inline-block text-muted"
             >
               LinkedIn
             </a>

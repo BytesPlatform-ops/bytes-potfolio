@@ -17,6 +17,10 @@
   --color-paper: #f2eee3;
   --color-paper-soft: #e7e3da;
   --color-paper-deep: #dbd6ca;
+  /* The archive wall. A ground, not a fourth accent — cobalt at full volume
+     read as pop art behind a page of type, so the work sits on midnight and
+     lets lime and coral do the shouting. */
+  --color-midnight: #131f45;
 
   /* Accent ----------------------------------------------------------------- */
   --color-accent: #3157ff;          /* electric cobalt — the workhorse      */
@@ -1091,6 +1095,27 @@ button {
   color: var(--color-accent);
 }
 
+/* 1b. Pixel flecks. The only motion is a slow dip in opacity — no position
+   jitter, no colour shift. Anything faster reads as a rendering fault rather
+   than as a treatment, which is the line this effect has to stay behind. */
+@keyframes pixel-fleck {
+  0%,
+  100% {
+    opacity: var(--fleck-o, 0.6);
+  }
+  46% {
+    opacity: calc(var(--fleck-o, 0.6) * 0.28);
+  }
+}
+.pixel-fleck {
+  animation: pixel-fleck 4.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pixel-fleck {
+    animation: none;
+  }
+}
+
 /* 2. Marker underline. Drawn on scroll-in, not on load. */
 .marker {
   position: relative;
@@ -1296,5 +1321,54 @@ button {
   }
   .lg-btn-primary::after {
     animation: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Element tinting.
+
+   Only saturation and contrast live here. Recolouring by hue was tried with
+   `sepia() hue-rotate()` and abandoned: CSS hue-rotate is a matrix
+   approximation rather than a hue lookup, and cobalt came out violet. Pieces
+   that need to change colour are re-mapped in the file instead — see
+   `flower-cobalt.webp` — which is exact and costs nothing at runtime.
+   -------------------------------------------------------------------------- */
+
+.tint-quiet {
+  filter: saturate(0.55) contrast(0.95);
+}
+
+/* --------------------------------------------------------------------------
+   Collage hover.
+
+   Two behaviours, shared so every section reacts the same way: paper and
+   photographs lift a little off the page, and a handwritten note nudges as
+   though it were nudged. Both are suppressed under reduced-motion.
+   -------------------------------------------------------------------------- */
+
+.paper-lift {
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.paper-lift:hover,
+.group:hover .paper-lift {
+  transform: translateY(-4px) rotate(1deg);
+}
+
+.group:hover .note-nudge {
+  transform: translate(3px, -2px);
+}
+
+.note-nudge {
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-lift:hover,
+  .group:hover .paper-lift,
+  .group:hover .note-nudge {
+    transform: none;
   }
 }

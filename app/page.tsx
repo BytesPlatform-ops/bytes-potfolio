@@ -24,7 +24,7 @@ import { Contact } from "@/components/sections/Contact";
  * the work or the About section already said better.
  *
  * Colour lands at four planned moments and nowhere else: lime in the marquee,
- * cobalt across the archive, coral behind About, and near-black plus cobalt
+ * midnight across the archive, coral behind About, and near-black plus cobalt
  * and lime at Contact. The rest is cream and ink so those four register.
  */
 export default function Home() {
@@ -36,13 +36,13 @@ export default function Home() {
         <Header />
 
         <main id="main">
-          {/* 01 — Baneen, in her own collage */}
+          {/* 01 — Bia, in her own collage */}
           <Hero />
 
           {/* 02 — lime marquee */}
           <IdentityStrip />
 
-          {/* 03 — the work: carousel + all twenty-five */}
+          {/* 03 — the work: midnight wall, all twenty-five */}
           <PortfolioArchive />
 
           {/* 04 — coral moment */}

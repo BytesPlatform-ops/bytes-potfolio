@@ -48,7 +48,7 @@ export function Header() {
               menuOpen ? "text-paper" : "text-ink",
             )}
           >
-            <span className="text-[1rem] tracking-[0.12em]">{siteConfig.name}</span>
+            <span className="text-[1rem] tracking-[0.12em]">{siteConfig.brand}</span>
             <span
               aria-hidden="true"
               className="ml-2.5 hidden text-[0.58rem] normal-case tracking-[0.16em] opacity-45 md:inline"

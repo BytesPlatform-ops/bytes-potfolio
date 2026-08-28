@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
      * dev and falls back in production. These are the values actually passed
      * to `<Image quality>` across the site — keep the two in sync.
      */
-    qualities: [72, 74, 75, 80, 82, 84, 86, 88],
+    qualities: [72, 74, 75, 80, 82, 84, 86, 88, 92],
   },
 };
 

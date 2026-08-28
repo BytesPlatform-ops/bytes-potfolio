@@ -1,9 +1,9 @@
 export type TechGroup = { label: string; items: string[] };
 
 export const techGroups: TechGroup[] = [
-  { label: "Frontend", items: ["Next.js", "React", "TypeScript"] },
-  { label: "Styling", items: ["Tailwind", "CSS", "Motion"] },
-  { label: "Backend", items: ["Node.js", "APIs", "Databases"] },
-  { label: "CMS & Commerce", items: ["WordPress", "Shopify", "Headless CMS"] },
-  { label: "Infrastructure", items: ["Vercel", "Cloud", "CI/CD"] },
+  { label: "CMS", items: ["WordPress", "Webflow", "Headless CMS"] },
+  { label: "Commerce", items: ["Shopify", "Liquid", "WooCommerce"] },
+  { label: "Builders", items: ["Elementor Pro", "DIVI", "AVADA"] },
+  { label: "Front-end", items: ["HTML / CSS", "JavaScript", "PHP"] },
+  { label: "Design & ops", items: ["Figma", "Analytics", "CRO"] },
 ];

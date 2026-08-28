@@ -95,7 +95,7 @@ export function EnquiryModal({
         <aside className="relative flex flex-col justify-between border-b border-[var(--line-ink)] px-[var(--gutter)] pb-10 pt-24 lg:border-b-0 lg:border-r lg:pb-14 lg:pt-[13vh]">
           <div>
             <span className="t-label text-muted">
-              {siteConfig.name}
+              {siteConfig.brand}
             </span>
             <h2
               id="enquiry-title"
@@ -113,13 +113,7 @@ export function EnquiryModal({
 
           <div className="mt-12 hidden lg:block">
             <div className="rule rule-ink mb-6" />
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="t-body block text-paper transition-colors hover:text-accent"
-            >
-              {siteConfig.email}
-            </a>
-            <p className="t-meta mt-6 text-muted">{siteConfig.responseNote}</p>
+            <p className="t-meta text-muted">{siteConfig.responseNote}</p>
           </div>
         </aside>
 
@@ -354,16 +348,6 @@ export function EnquiryModal({
                   ? `Thanks — I'll take a look and get back to you. ${siteConfig.responseNote}`
                   : state.message}
               </p>
-
-              {state.status === "manual" ? (
-                <a
-                  href={state.mailto}
-                  className="group mt-9 inline-flex h-[3.4rem] items-center gap-3 rounded-full bg-paper px-8 text-[0.98rem] font-medium text-ink"
-                >
-                  Open the email
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
-              ) : null}
 
               <button
                 type="button"

@@ -206,21 +206,28 @@ export function HeroOrbit() {
     // Geometry, all derived from the zone so it holds at every width. The ring
     // is wider than the viewport on purpose: plates should leave and enter at
     // the edges, which is what suggests the ring continues past the screen.
-    const Rx = box.w * (wide ? 0.47 : 0.56);
+    const Rx = box.w * (wide ? 0.55 : 0.6);
     const Rz = Math.min(box.w * 0.34, 560);
     // A pronounced tilt is what keeps the type clear: the front of the ring
     // passes low and the far side rides high, so most plates are already out
     // of the headline's band before the corridor fade has to do anything.
     const Ry = box.h * (wide ? 0.4 : 0.3);
-    const baseW = Math.max(160, Math.min(box.w * (wide ? 0.26 : 0.4), 420));
+    const baseW = Math.max(150, Math.min(box.w * (wide ? 0.235 : 0.36), 380));
 
     // The type owns the middle. Anything crossing it is faded by its distance
     // from the centre measured on BOTH axes — an x-only corridor lets the
     // front plate, which passes low and large, sit right on the paragraph.
-    const corridorX = Rx * 0.58;
+    // Widened: the portrait is now the centrepiece and runs nearly the full
+    // height of the scene, so the protected column is much broader than when
+    // it only had to clear a line of type.
+    const corridorX = Rx * 0.76;
     // The hero column now runs label → headline → portrait → copy → CTA,
     // so the protected band is nearly the full height of the scene.
-    const corridorY = box.h * 0.64;
+    // Raised with the portrait: she now runs from the wordmark to the copy,
+    // so the protected column is effectively the whole scene. At 0.64 the top
+    // of the ring escaped the fade and left grey plates hanging behind the
+    // headline, which read as artefacts rather than as depth.
+    const corridorY = box.h * 0.92;
 
     let raf = 0;
     let last = performance.now();
@@ -264,7 +271,12 @@ export function HeroOrbit() {
         const nearAxis = 1 - r * r * (3 - 2 * r);
         // Nearer plates are brighter, so they need to give way harder.
         const veil = nearAxis * (0.88 + 0.1 * (1 - depth));
-        const opacity = (0.16 + (1 - depth) * 0.84) * (1 - veil) * reveal;
+        // The falloff is deliberately non-linear. Linear opacity left the
+        // middle of the ring — half-lit, half-blurred plates — reading as grey
+        // rectangles behind the type rather than as distance. Raising the
+        // curve keeps the near plates at full strength and lets everything
+        // past the flanks drop away quickly.
+        const opacity = (0.03 + Math.pow(1 - depth, 1.7) * 0.97) * (1 - veil) * reveal;
 
         el.style.transform =
           `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), ${z.toFixed(1)}px)` +
@@ -275,7 +287,7 @@ export function HeroOrbit() {
         // can never jump in front of the type or of its own neighbours.
         el.style.zIndex = String(100 - Math.round(depth * 90) + (isHovered ? 2 : 0));
         el.style.width = `${Math.round(baseW)}px`;
-        el.style.filter = depth > 0.06 ? `blur(${(depth * 3).toFixed(2)}px)` : "none";
+        el.style.filter = depth > 0.06 ? `blur(${(depth * 4.5).toFixed(2)}px)` : "none";
         // Nothing at the back is clickable — but a plate already under the
         // pointer keeps its events until the pointer actually leaves it.
         // Without that hysteresis the ring's own rotation flips this flag

@@ -1,28 +1,28 @@
-# Portrait slot
+# Profile assets
 
-Drop Baneen's photograph here as:
+`bia-zane.webp` is the canonical portrait — the standing figure flattened onto
+an opaque cream ground, used for OpenGraph, Twitter cards and anywhere an
+avatar is needed. It is deliberately not transparent: several clients render
+alpha as black.
 
-    public/profile/baneen.webp
+The section figures live in `public/collage/portraits/`:
 
-Then set `portrait.hasPortrait = true` in `lib/site.ts`. Nothing else needs
-to change — the hero, About and Contact compositions all read from that one
-flag and swap the placeholder for the real image in place.
+| file                | used by  | why                                             |
+| ------------------- | -------- | ----------------------------------------------- |
+| `bia-hero.webp`     | Hero     | narrowest silhouette, so it can be very tall     |
+| `bia-seated.webp`   | About    | seated with the laptop — reads as working        |
+| `bia-standing.webp` | Contact  | standing with laptop and bag                     |
+| `bia-coffee.webp`   | —        | spare                                            |
+| `bia-desk.webp`     | —        | spare                                            |
 
-Until then every portrait position renders a designed collage frame (grid,
-halftone, registration corners, initial). That is deliberate.
+These are full-length figures, which is what lets the hero work: the head sits
+in the top fifth, so a headline can cross the figure low without landing on the
+face. The previous head-and-shoulders crops could not do that — the face filled
+two thirds of the frame.
 
-## About guy.jpeg
+They arrive as clean cut-outs with their own collage already around them, so no
+torn-paper edge is applied and each section keeps its own decoration light near
+them.
 
-`guy.jpeg` in the repo root is a **mood reference only** — it sets the
-editorial-collage art direction: torn paper, engineering grid, pencil
-scribble, halftone, red paper objects. It is a photograph of someone else and
-must never be shown as Baneen. It is also a watermarked stock comp, so it is
-not licensed for display either way.
-
-## Recommended source image
-
-- waist-up or head-and-shoulders, facing camera or slightly angled
-- background removed or cleanly maskable — the composition sits her on top of
-  vector collage, so a busy studio backdrop fights it
-- warm neutral grade to sit with the cream palette
-- ~1200×1600, exported as WebP
+Originals are kept out of `public/` in `profile-source/` at the repo root — the
+supplied PNGs are ~2MB each and should never be served.

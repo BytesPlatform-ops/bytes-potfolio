@@ -4,6 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { TextReveal } from "@/components/motion/TextReveal";
+import { CollageElement } from "@/components/collage/CollageElement";
+import { usePointer } from "@/components/collage/usePointer";
+import { Cursor, GridPatch, Plus } from "@/components/collage/Marks";
 import { cx } from "@/lib/utils";
 import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
 
@@ -49,10 +52,32 @@ export function Services() {
   const [active, setActive] = useState(0);
   const reduce = useSafeReducedMotion();
   const current = AREAS[active];
+  const { px, py, onPointerMove, onPointerLeave } = usePointer();
 
   return (
-    <section id="skills" className="section-y scroll-mt-24 bg-paper" aria-labelledby="skills-heading">
-      <div className="shell-wide">
+    <section
+      id="skills"
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+      className="section-y relative scroll-mt-24 bg-paper"
+      aria-labelledby="skills-heading"
+    >
+      {/* ---- scenery: the list is the subject, so this stays at the edges ----
+          One dominant idea here is the pointer — you pick a word and a site
+          appears — so the cursor is the only piece allowed near the middle. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <GridPatch cell={28} className="absolute -left-[4%] top-[18%] h-[34vw] w-[26vw] text-ink/[0.085]" />
+        <CollageElement src="/collage/paper/coral-paper-strip.png" width="15vw" className="-left-[5vw] bottom-[12%]"
+          rotate={-8} parallax={0.3} px={px} py={py} from="left" delay={0.15} desktopOnly />
+        <CollageElement src="/collage/objects/flower-cobalt.png" width="7vw" className="right-[3vw] top-[6%]"
+          rotate={9} parallax={0.5} px={px} py={py} delay={0.28} idle desktopOnly />
+        <CollageElement src="/collage/doodles/scribble-loops.png" width="13vw" className="left-[42vw] top-[7%]"
+          rotate={-6} opacity={0.5} parallax={0.45} px={px} py={py} delay={0.34} desktopOnly />
+        <Cursor className="absolute right-[22vw] top-[42%] hidden h-8 w-7 text-accent/70 lg:block" />
+        <Plus className="absolute bottom-[22%] right-[8%] hidden h-4 w-4 text-lime lg:block" />
+      </div>
+
+      <div className="shell-wide relative">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <span className="sticker sticker-accent">Skills</span>

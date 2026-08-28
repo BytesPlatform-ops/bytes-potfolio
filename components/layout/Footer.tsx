@@ -1,6 +1,6 @@
 import { siteConfig } from "@/lib/site";
 import { AnimatedLink } from "@/components/ui/AnimatedLink";
-import { Halftone, Plus } from "@/components/collage/Marks";
+import { DotTrail, Halftone, InkArrow, Plus } from "@/components/collage/Marks";
 
 /**
  * Footer.
@@ -17,6 +17,9 @@ export function Footer() {
         className="pointer-events-none absolute -right-6 top-6 h-40 w-56 text-paper/[0.07]"
       />
       <Plus className="pointer-events-none absolute left-[12%] top-10 h-4 w-4 text-lime/60" />
+      {/* Minimal by design — the footer is an ending, not another section. */}
+      <DotTrail aria-hidden="true" className="pointer-events-none absolute right-[8%] top-14 hidden h-3 w-28 text-paper/20 lg:block" />
+      <InkArrow aria-hidden="true" className="pointer-events-none absolute bottom-[18%] right-[6%] hidden h-6 w-16 -rotate-[14deg] text-paper/25 lg:block" />
 
       <div className="shell-wide relative">
         <p
@@ -25,18 +28,10 @@ export function Footer() {
         >
           {siteConfig.name}
         </p>
-        <p className="note note-ink mt-4">designer / developer / internet person</p>
+        <p className="note note-ink mt-4">WordPress / Shopify / Webflow</p>
 
         <div className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-wrap items-end justify-between gap-x-10 gap-y-6 border-t border-[var(--line-ink)] pt-7">
           <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
-            <li>
-              <AnimatedLink
-                href={`mailto:${siteConfig.email}`}
-                className="text-[1.02rem] text-paper/85"
-              >
-                {siteConfig.email}
-              </AnimatedLink>
-            </li>
             <li>
               <AnimatedLink href={siteConfig.social.linkedin} external className="text-[1.02rem] text-paper/85">
                 LinkedIn

@@ -10,12 +10,12 @@ import { Marquee } from "@/components/motion/Marquee";
  * actually consist of says the same thing without the boardroom voice.
  */
 const WORDS = [
-  "design",
-  "code",
-  "motion",
-  "websites",
+  "wordpress",
+  "shopify",
+  "webflow",
+  "figma to cms",
+  "fast sites",
   "good type",
-  "strange ideas",
   "repeat",
 ];
 

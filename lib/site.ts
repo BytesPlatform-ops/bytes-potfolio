@@ -2,27 +2,55 @@
  * Central content configuration.
  *
  * One person, not a company. Everything identifying her lives in `me` below —
- * change those fields and the name, role and email update everywhere: header,
- * footer, metadata, JSON-LD, form copy and the enquiry email. Nothing about
- * her identity is hard-coded in a component.
+ * change those fields and the name and role update everywhere: header, footer,
+ * metadata, JSON-LD and form copy. Nothing about her identity is hard-coded in
+ * a component.
+ *
+ * There is deliberately no address or domain here. See `siteUrl` below.
+ *
+ * Two forms of the name, deliberately kept separate. `brand` is the compact
+ * wordmark and only ever appears where space is tight — the header lockup, the
+ * modal's eyebrow label. `name` is the full professional name and is what goes
+ * anywhere the reader is being introduced to a person or a machine is reading
+ * the page: About, footer, SEO title, OpenGraph, Person schema.
  */
 export const me = {
-  name: "Baneen",
-  role: "Designer + Developer",
-  email: "hello@baneen.design",
+  /** Full professional name. Introductions, metadata, structured data. */
+  name: "Bia Zane",
+  /** Compact wordmark. Header and other tight lockups only. */
+  brand: "BIA Z.",
+  role: "CMS Developer",
+  /** The three platforms the practice is actually built on. */
+  platforms: ["WordPress", "Shopify", "Webflow"],
 } as const;
+
+/**
+ * Canonical origin — deliberately unset.
+ *
+ * No domain is claimed for this site yet, and inventing one would put a false
+ * address into the canonical tag, OpenGraph and structured data, where search
+ * engines read it as fact. Everything that needs an absolute URL checks this
+ * first and omits the field when it is null, so the metadata stays honest and
+ * simply says less. Set `NEXT_PUBLIC_SITE_URL` at deploy time to restore it.
+ */
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || null;
+
+/** "CMS Developer · WordPress · Shopify · Webflow" — the positioning line. */
+export const positioning = `${me.role} · ${me.platforms.join(" · ")}`;
 
 export const siteConfig = {
   name: me.name,
-  url: "https://baneen.design",
-  tagline: "Designer + Developer",
+  brand: me.brand,
+  tagline: positioning,
   description:
-    "I'm Baneen — a designer who codes. I build websites, products and interactive things for brands that don't want to look like everyone else.",
+    "I'm Bia Zane — a CMS developer building high-performance WordPress, Shopify and Webflow sites. Figma to CMS, theme and template customisation, and the integrations that make it all actually work.",
 
   /** Sits under the wordmark, in the footer and in the hero rail. */
-  discipline: "designer + developer",
+  discipline: "CMS developer",
 
-  email: me.email,
+  /* No public address. The enquiry form is the only way in, and it posts to
+     whatever `ENQUIRY_TO_EMAIL` names on the server — the inbox is never
+     shipped to the browser. */
 
   responseNote: "I usually reply within a day.",
   availability: "available for selected projects",
@@ -47,58 +75,79 @@ export const siteConfig = {
 /**
  * Portrait slot.
  *
- * ⚠️  `public/profile/baneen.webp` does not exist yet, and until a real
- * photograph of Baneen is dropped in, `hasPortrait` stays false and every
- * portrait position renders a designed collage placeholder instead.
+ * Three supplied full-length figures, one per section, so she is never the
+ * same picture twice on one page. They are cut-outs with their own collage
+ * around them and sit on their own layer above the page's paper.
  *
- * It deliberately does NOT fall back to a stock face. `guy.jpeg` in this repo
- * is a mood reference for the collage art direction only — that is a
- * photograph of a different person, and dressing it up as Baneen would
- * misrepresent two real people at once.
+ * `/profile/bia-zane.webp` is the flattened version on an opaque cream ground
+ * for OpenGraph and avatars, where transparency renders as black in several
+ * clients.
  */
 export const portrait = {
-  /**
-   * Cut out of the supplied collage sheet and given a torn-paper alpha edge,
-   * so she is an independent layer rather than part of a background image.
-   * Three crops: `full` (seated), `bust` (head + shoulders), `frame`.
-   */
-  src: "/collage/portraits/baneen-full.webp",
+  src: "/profile/bia-zane.webp",
   hasPortrait: true,
   alt: `${me.name} — ${me.role}`,
 } as const;
 
 /** Small true facts. Editable; invent nothing. */
 export const personalFacts = [
-  { k: "Designing from", v: "PKT" },
+  { k: "Building from", v: "PKT" },
   { k: "Working with", v: "clients worldwide" },
   { k: "Usually in", v: "Figma + VS Code" },
 ] as const;
 
-/** One line, not a section. */
+/**
+ * Hero sticker. Unpacks the one subjective word in the headline into three
+ * things that are actually measurable, so "personality" reads as a way of
+ * working rather than a mood. Her own vocabulary — nothing added.
+ */
+export const personalityKeywords = ["fast", "responsive", "conversion-focused"] as const;
+
+/**
+ * About — the specialisation list, straight from the Upwork profile.
+ * Rendered as a scannable two-column list rather than a run-on sentence.
+ * Editable, but invent nothing: these are the services actually offered.
+ */
+export const specialties = [
+  "Custom development",
+  "Theme customization",
+  "Figma to WordPress",
+  "Figma to Shopify",
+  "Figma to Webflow",
+  "Elementor Pro",
+  "DIVI",
+  "AVADA",
+  "Liquid",
+  "CRO",
+  "Replit AI Apps",
+  "Custom integrations",
+] as const;
+
+/** One line, not a section. Ordered by what actually fills the week. */
 export const tools = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Motion",
-  "Node",
-  "Shopify",
   "WordPress",
+  "Shopify",
+  "Webflow",
+  "Elementor",
+  "Liquid",
+  "Figma",
+  "PHP",
 ] as const;
 
 /** Budget bands shown in the enquiry modal. Purely UI copy — edit freely. */
 export const budgetBands = [
-  "Under $5k",
+  "Under $2k",
+  "$2k – $5k",
   "$5k – $10k",
-  "$10k – $25k",
-  "$25k+",
+  "$10k+",
   "Not sure yet",
 ] as const;
 
 export const projectTypes = [
-  "New Website",
-  "Website Redesign",
-  "Web Application",
-  "E-commerce",
-  "UI/UX",
+  "WordPress Site",
+  "Shopify Store",
+  "Webflow Site",
+  "Figma to CMS",
+  "Redesign / Migration",
   "Something Else",
 ] as const;

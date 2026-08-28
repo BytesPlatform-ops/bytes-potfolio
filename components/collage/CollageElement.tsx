@@ -30,8 +30,15 @@ export type CollageProps = {
   from?: "left" | "right" | "top" | "bottom" | "scale";
 };
 
-/** Parallax depth in px for a given strength. */
-const DEPTH = 26;
+/**
+ * Peak parallax travel in px, at strength 1.
+ *
+ * Tuned so the strengths in use across the site land where they should:
+ * background pieces (~0.2) move 1–2px, mid-layer (~0.35–0.5) 3–4px, and
+ * foreground (~0.7–0.8) 6–7px. Vertical travel is 60% of horizontal, because
+ * the page already moves vertically and matching it reads as drift.
+ */
+const DEPTH = 9;
 
 /**
  * One piece of the collage.
@@ -94,7 +101,7 @@ export function CollageElement({
         {...(idle
           ? {
               animate: {
-                y: [0, -7, 0],
+                y: [0, -4, 0],
                 transition: { duration: 9, repeat: Infinity, ease: "easeInOut" },
               },
             }

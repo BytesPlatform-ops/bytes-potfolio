@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useTransform } from "motion/react";
 import { siteConfig } from "@/lib/site";
 import { TextReveal } from "@/components/motion/TextReveal";
@@ -41,22 +42,44 @@ export function Contact() {
       </motion.div>
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <CollageElement src="/collage/paper/black-torn-paper.webp" width="20vw" className="-right-[4vw] top-[8%]"
+        <CollageElement src="/collage/paper/black-torn-paper.png" width="20vw" className="-right-[4vw] top-[8%]"
           rotate={7} parallax={0.35} px={px} py={py} from="right" delay={0.1} desktopOnly />
-        <CollageElement src="/collage/paper/blue-paper.webp" width="18vw" className="-left-[6vw] top-[30%]"
+        <CollageElement src="/collage/paper/blue-paper.png" width="18vw" className="-left-[6vw] top-[30%]"
           rotate={-8} parallax={0.3} px={px} py={py} from="left" delay={0.18} desktopOnly />
-        <CollageElement src="/collage/objects/red-paper-ball-2.webp" width="6vw" className="left-[26%] top-[14%]"
+        <CollageElement src="/collage/objects/red-paper-ball-2.png" width="6vw" className="left-[26%] top-[14%]"
           rotate={-14} parallax={0.7} px={px} py={py} delay={0.35} idle desktopOnly />
-        <CollageElement src="/collage/doodles/lime-stroke.webp" width="11vw" className="left-[8%] bottom-[22%]"
+        <CollageElement src="/collage/doodles/lime-stroke.png" width="11vw" className="left-[8%] bottom-[22%]"
           rotate={5} parallax={0.5} px={px} py={py} delay={0.42} desktopOnly />
-        <CollageElement src="/collage/doodles/star-blue.webp" width="3vw" className="right-[38%] top-[22%]"
+        <CollageElement src="/collage/doodles/star-blue.png" width="3vw" className="right-[38%] top-[22%]"
           rotate={0} parallax={0.8} px={px} py={py} delay={0.5} desktopOnly />
       </div>
 
       {/* ---- her, a third crop ---- */}
+      {/* The sign-off. A cut piece rather than set type — it says the line
+          already, in her hand, and the polaroid gives the section its ending. */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-[7%] left-[36%] z-20 hidden w-[clamp(8.5rem,12vw,11rem)] lg:block"
+        initial={{ opacity: 0, y: 22, rotate: -6 }}
+        whileInView={{ opacity: 1, y: 0, rotate: -3 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+      >
+        <Image
+          src="/separated_elements/sheet1/29_lets_build_something_cool_polaroid.png"
+          alt=""
+          width={281}
+          height={330}
+          sizes="13vw"
+          className="h-auto w-full"
+        />
+      </motion.div>
+
+      {/* Up a third, for the same reason as the hero — same height, wider
+          frame. She still clears the heading and the CTA row at this size. */}
       <PortraitCollage
         crop="bust"
-        width="min(15rem,22vw)"
+        width="min(19.5rem,28vw)"
         className="bottom-[6%] right-[5%] hidden lg:block"
         rotate={3}
         parallax={0.3}
@@ -93,16 +116,10 @@ export function Contact() {
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:rotate-45" />
             </button>
 
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="group relative text-[clamp(1.05rem,2vw,1.6rem)] tracking-[-0.03em] text-paper/85"
-            >
-              {siteConfig.email}
-              <span
-                aria-hidden="true"
-                className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-lime transition-transform duration-[420ms] ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:origin-left group-hover:scale-x-100"
-              />
-            </a>
+            {/* The address that sat beside this button is gone — nothing is
+                published to write to. The form is the way in, and it says how
+                long a reply takes rather than showing an inbox. */}
+            <p className="t-body text-paper/70">{siteConfig.responseNote}</p>
           </div>
         </Reveal>
 

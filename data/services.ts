@@ -6,53 +6,61 @@ export type Service = {
   points: string[];
 };
 
+/**
+ * What the practice actually sells.
+ *
+ * Rewritten around CMS work. The previous set read like a general studio
+ * menu — UI/UX, web applications, creative development — which described a
+ * different job to the one being done here. These six are the things a
+ * WordPress, Shopify and Webflow developer is genuinely hired for.
+ */
 export const services: Service[] = [
   {
-    id: "website-design",
+    id: "wordpress",
     number: "01",
-    title: "Website Design",
+    title: "WordPress Development",
     blurb:
-      "Custom design built around what your business actually needs the site to do. Every screen has a job — usually getting the right person to the right next step without thinking about it.",
-    points: ["Art direction", "Marketing sites", "Landing pages", "Redesigns"],
+      "Custom themes and builder work that stays fast. Elementor Pro, DIVI and AVADA when the team needs to edit it themselves, hand-built templates when the design deserves better than a widget.",
+    points: ["Custom themes", "Elementor Pro", "DIVI / AVADA", "Speed & Core Web Vitals"],
   },
   {
-    id: "web-development",
+    id: "shopify",
     number: "02",
-    title: "Frontend Development",
+    title: "Shopify Development",
     blurb:
-      "Production front-end and full-stack work. Clean markup, real responsiveness, fast loads, and code the next developer can read without an archaeology dig.",
-    points: ["Next.js / React", "CMS integration", "APIs", "Performance"],
+      "Storefronts designed around the purchase, not the homepage. Liquid theme work, clear product pages, honest merchandising, and a checkout that doesn't lose people halfway through.",
+    points: ["Liquid themes", "Product pages", "App integration", "Checkout UX"],
   },
   {
-    id: "ui-ux",
+    id: "webflow",
     number: "03",
-    title: "UI/UX Design",
+    title: "Webflow Development",
     blurb:
-      "Products, dashboards, portals and internal tools. I map the flows first, then design the screens — so the interface follows the work instead of fighting it.",
-    points: ["User flows", "Design systems", "Dashboards", "Prototypes"],
+      "Pixel-accurate builds with a CMS your marketing team can run without opening a ticket. Clean class structure, real interactions, and collections set up so content scales.",
+    points: ["Webflow CMS", "Interactions", "Responsive builds", "Client handover"],
   },
   {
-    id: "ecommerce",
+    id: "figma-to-cms",
     number: "04",
-    title: "E-commerce",
+    title: "Figma to CMS",
     blurb:
-      "Storefronts designed around the purchase, not the homepage. Clear product pages, honest merchandising, and a checkout that doesn't lose people halfway through.",
-    points: ["Shopify", "Headless commerce", "Product pages", "Checkout UX"],
+      "A design file turned into a working, editable site — WordPress, Shopify or Webflow. What you approved in Figma is what ships, including the states, the breakpoints and the empty cases.",
+    points: ["Figma to WordPress", "Figma to Shopify", "Figma to Webflow", "Design QA"],
   },
   {
-    id: "web-applications",
+    id: "redesign-migration",
     number: "05",
-    title: "Web Applications",
+    title: "Redesign & Migration",
     blurb:
-      "Custom tools, SaaS products and business platforms. From the first sketch of the data model through to the interface your team opens every morning.",
-    points: ["SaaS products", "Client portals", "Internal tools", "Integrations"],
+      "Moving a site onto a platform that fits it, without losing the traffic you already have. Redirects mapped, structure kept, content brought across intact.",
+    points: ["Replatforming", "Redirect mapping", "Content migration", "SEO continuity"],
   },
   {
-    id: "creative-development",
+    id: "cro-integrations",
     number: "06",
-    title: "Creative Development",
+    title: "CRO & Integrations",
     blurb:
-      "Motion, interaction and the front-end work that makes a site feel built rather than assembled. Used where it earns attention — not everywhere at once.",
-    points: ["Scroll sequences", "Interaction design", "WebGL / Canvas", "Micro-detail"],
+      "The work after launch that decides whether the site pays for itself. Conversion-focused changes backed by analytics, plus the custom integrations that connect it to everything else you run.",
+    points: ["Conversion optimisation", "Analytics", "Custom integrations", "AI apps"],
   },
 ];

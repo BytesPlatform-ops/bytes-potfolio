@@ -3,11 +3,11 @@
 import { motion } from "motion/react";
 import { TextReveal } from "@/components/motion/TextReveal";
 import { Reveal } from "@/components/motion/Reveal";
-import { me, siteConfig, personalFacts, tools } from "@/lib/site";
-import { AnimatedLink } from "@/components/ui/AnimatedLink";
+import { me, personalFacts, specialties, tools } from "@/lib/site";
 import { CollageElement } from "@/components/collage/CollageElement";
 import { PortraitCollage } from "@/components/collage/PortraitCollage";
 import { usePointer } from "@/components/collage/usePointer";
+import { useModals } from "@/components/forms/ModalProvider";
 import { GridPatch, Halftone, InkArrow } from "@/components/collage/Marks";
 
 /**
@@ -20,6 +20,7 @@ import { GridPatch, Halftone, InkArrow } from "@/components/collage/Marks";
  */
 export function About() {
   const { px, py, onPointerMove, onPointerLeave } = usePointer();
+  const { openEnquiry } = useModals();
 
   return (
     <section
@@ -37,25 +38,32 @@ export function About() {
 
       {/* paper + objects */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <CollageElement src="/collage/paper/coral-paper-strip.webp" width="20vw" className="left-[16vw] -top-[3vw]"
+        <CollageElement src="/collage/paper/coral-paper-strip.png" width="20vw" className="left-[16vw] -top-[3vw]"
           rotate={-6} parallax={0.3} px={px} py={py} from="top" delay={0.1} desktopOnly />
-        <CollageElement src="/collage/paper/blue-tape.webp" width="9vw" className="left-[6vw] top-[12%]"
+        <CollageElement src="/collage/paper/blue-tape.png" width="9vw" className="left-[6vw] top-[12%]"
           rotate={-14} parallax={0.5} px={px} py={py} from="left" delay={0.2} desktopOnly z={30} />
-        <CollageElement src="/collage/objects/red-paper-ball-3.webp" width="6vw" className="right-[30vw] top-[14%]"
+        <CollageElement src="/collage/objects/red-paper-ball-3.png" width="5.5vw" className="right-[38vw] top-[5%]"
           rotate={10} parallax={0.7} px={px} py={py} delay={0.4} idle desktopOnly />
-        <CollageElement src="/collage/objects/camera.webp" width="9vw" className="right-[8vw] top-[26%]"
+        <CollageElement src="/collage/objects/camera.png" width="8vw" className="right-[2vw] top-[38%]"
           rotate={-8} parallax={0.55} px={px} py={py} delay={0.5} desktopOnly />
-        <CollageElement src="/collage/objects/wire-globe.webp" width="6vw" className="right-[3vw] top-[8%]"
+        <CollageElement src="/collage/objects/wire-globe.png" width="6vw" className="right-[3vw] top-[8%]"
           rotate={6} parallax={0.6} px={px} py={py} delay={0.55} desktopOnly />
       </div>
 
       <div className="shell-wide relative">
         <div className="grid grid-cols-1 items-start gap-x-[clamp(1.5rem,4vw,3rem)] gap-y-[clamp(2.5rem,6vh,4rem)] lg:grid-cols-12">
           {/* ---- her ---- */}
-          <div className="relative min-h-[26rem] lg:col-span-5 lg:min-h-[34rem]">
+          {/* She is positioned absolutely, so this column has to reserve her
+              height or she falls across the copy below it. Below `lg` the
+              column is full width, and her height is 4/3 of whichever of
+              `27rem` / `92%` wins — which crosses a fixed `29rem` at around a
+              500px viewport. Tracking it with `min()` follows the same curve
+              instead of picking one breakpoint and being wrong either side:
+              tight on a phone, capped once she stops growing. */}
+          <div className="relative min-h-[min(37rem,116vw)] lg:col-span-5 lg:min-h-[38rem]">
             <PortraitCollage
               crop="frame"
-              width="min(24rem,90%)"
+              width="min(27rem,92%)"
               className="left-0 top-0"
               rotate={-2.5}
               parallax={0.25}
@@ -70,7 +78,7 @@ export function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              yes, I coded it too
+              yes, I built it too
             </motion.span>
           </div>
 
@@ -78,39 +86,67 @@ export function About() {
           <div className="relative z-10 lg:col-span-6 lg:col-start-7 lg:pt-[5vh]">
             <span className="sticker sticker-coral">About</span>
 
+            {/* The name introduces; the specialisation qualifies it. This is a
+                personal portfolio, so the person is the heading and the job
+                title is the line underneath — not the other way round. */}
             <TextReveal
               as="h2"
               id="about-heading"
-              className="t-display mt-6 max-w-[12ch] text-ink"
+              className="t-display mt-6 max-w-[14ch] text-ink"
               lines={[<>Hi, I&rsquo;m {me.name}.</>]}
             />
             <TextReveal
               as="p"
-              className="t-section mt-2 max-w-[14ch] text-ink/45"
-              lines={[<>Designer brain.</>, <>Developer hands.</>]}
+              className="t-section mt-2 max-w-[18ch] text-ink/45"
+              lines={[
+                <>{me.role} specialised</>,
+                <>in {me.platforms[0]}, {me.platforms[1]}</>,
+                <>&amp; {me.platforms[2]}</>,
+              ]}
             />
 
             <div className="measure-wide mt-8 flex flex-col gap-5">
               <Reveal delay={1}>
                 <p className="t-body text-muted-ink">
-                  I work on websites and digital products from the first messy
-                  idea to the final deploy. I like strong typography, unusual
-                  layouts, thoughtful motion, and interfaces that feel like they
-                  belong to the brand instead of a template.
+                  Are you searching for an expert WordPress developer, Shopify
+                  developer, or Webflow developer? I&rsquo;m a professional
+                  WordPress, Shopify &amp; Webflow developer specializing in
+                  high-performance, responsive, conversion-focused websites.
                 </p>
               </Reveal>
               <Reveal delay={2}>
                 <p className="t-body text-muted-ink">
-                  Design, build, the fiddly bits in between — all me.{" "}
-                  <AnimatedLink href={`mailto:${siteConfig.email}`} className="text-ink">
+                  Want a hand with yours?{" "}
+                  {/* Opens the enquiry form rather than an address. Nothing to
+                      write to is published, and a dead link reads worse than
+                      no link at all. */}
+                  <button
+                    type="button"
+                    onClick={openEnquiry}
+                    className="text-ink underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-accent"
+                  >
                     Say hello
-                  </AnimatedLink>
+                  </button>
                   .
                 </p>
               </Reveal>
             </div>
 
             <Reveal delay={3}>
+              <ul className="mt-8 grid grid-cols-1 gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                {specialties.map((spec) => (
+                  <li
+                    key={spec}
+                    className="flex items-baseline gap-2.5 text-[0.95rem] leading-snug tracking-[-0.015em] text-ink/80"
+                  >
+                    <span aria-hidden="true" className="text-accent">/</span>
+                    {spec}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <Reveal delay={4}>
               <dl className="mt-9 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-[var(--line-paper)] pt-6 sm:grid-cols-3">
                 {personalFacts.map((f) => (
                   <div key={f.k}>
@@ -121,7 +157,7 @@ export function About() {
               </dl>
             </Reveal>
 
-            <Reveal delay={4}>
+            <Reveal delay={5}>
               <div className="mt-8">
                 <p className="t-label text-muted-ink/60">Tools I reach for</p>
                 <p className="mt-2.5 text-[clamp(0.95rem,1.4vw,1.15rem)] leading-[1.6] tracking-[-0.015em] text-ink/80">

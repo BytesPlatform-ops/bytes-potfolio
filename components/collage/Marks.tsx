@@ -175,3 +175,168 @@ export function Plus({ className, style }: MarkProps) {
     </svg>
   );
 }
+
+/* --------------------------------------------------------------------------
+   Process vocabulary — added for the journey section. Same rules as above:
+   inline SVG, colour inherited from `currentColor`, no glow, no gradients.
+   -------------------------------------------------------------------------- */
+
+/** Said out loud. The TALK step. */
+export function SpeechBubble({ className, style }: MarkProps) {
+  return (
+    <svg viewBox="0 0 120 92" fill="none" className={className} style={style} aria-hidden="true">
+      {/* Drawn slightly open at the corners so it reads as sketched, not boxed. */}
+      <path
+        d="M9 20C9 12 15 6 24 6h72c9 0 15 6 15.5 14l1 34c0 8-6 14.5-15 15l-42 .5-19 15.5.5-15.5H24c-9 0-15-6.5-15-15z"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+      />
+      <path d="M28 32h58M28 46h40" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity="0.55" />
+    </svg>
+  );
+}
+
+/** A pointer, mid-drag. The DESIGN step. */
+export function Cursor({ className, style }: MarkProps) {
+  return (
+    <svg viewBox="0 0 48 56" fill="none" className={className} style={style} aria-hidden="true">
+      <path
+        d="M7 5.5 40 26.5 25 29.5 33 45 26 48.5 18 33 7 42z"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Sent. The SHIP step. */
+export function PaperPlane({ className, style }: MarkProps) {
+  return (
+    <svg viewBox="0 0 110 88" fill="none" className={className} style={style} aria-hidden="true">
+      <path d="M4 40 104 6 70 82 52 56z" stroke="currentColor" strokeWidth="2.6" strokeLinejoin="round" />
+      <path d="M52 56 104 6" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" opacity="0.5" />
+      {/* The dotted trail it left. */}
+      <path d="M2 70q12 8 24 2M10 82q9 5 18 1" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="1 7" opacity="0.6" />
+    </svg>
+  );
+}
+
+/**
+ * The process path.
+ *
+ * Five stops drawn as one wobbling pencil line rather than a rule with ticks —
+ * a straight timeline is exactly the corporate read this section is trying to
+ * get away from. The node coordinates are exported so the marker can sit on
+ * the line instead of near it.
+ */
+export const PATH_NODES = [
+  { x: 62, y: 74 },
+  { x: 296, y: 44 },
+  { x: 520, y: 82 },
+  { x: 744, y: 40 },
+  { x: 938, y: 66 },
+] as const;
+
+export const PATH_VIEWBOX = { w: 1000, h: 120 };
+
+/**
+ * A lead-in and a tail, drawn but never stopped at.
+ *
+ * The line runs off both edges so it reads as a route the page is passing
+ * through rather than a bar that starts and stops at the first and last label.
+ */
+const LEAD = { x: -30, y: 96 };
+const TAIL = { x: 1030, y: 92 };
+
+/**
+ * One cubic per gap, through every point in order.
+ *
+ * The `d` string used to be written by hand, and it was wrong: it ran
+ * `M62 74 C…296 44 c…` and its last relative curve landed on (744, 40) — node
+ * four. Node five at (938, 66) was never in the path at all, so the track
+ * simply stopped after Build and the gap before Ship was the path genuinely
+ * ending there. Generating it from the same array the markers use means the
+ * curve cannot disagree with the stops again: add a phase and the line grows
+ * with it.
+ *
+ * Catmull-Rom converted to Bézier, which is the standard way to get a curve
+ * that passes *through* its control points rather than near them — a spline
+ * that only approximates would drift the line off the dots.
+ */
+function splineThrough(pts: ReadonlyArray<{ x: number; y: number }>): string {
+  if (pts.length < 2) return "";
+  let d = `M${pts[0].x} ${pts[0].y}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] ?? pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] ?? p2;
+    const c1x = p1.x + (p2.x - p0.x) / 6;
+    const c1y = p1.y + (p2.y - p0.y) / 6;
+    const c2x = p2.x - (p3.x - p1.x) / 6;
+    const c2y = p2.y - (p3.y - p1.y) / 6;
+    d += ` C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2.x} ${p2.y}`;
+  }
+  return d;
+}
+
+export const PROCESS_PATH_D = splineThrough([LEAD, ...PATH_NODES, TAIL]);
+
+export function ProcessPath({
+  className,
+  style,
+  pathRef,
+}: MarkProps & {
+  /** The solid stroke, handed out so the marker can ride the real geometry. */
+  pathRef?: React.Ref<SVGPathElement>;
+}) {
+  return (
+    <svg
+      viewBox={`0 0 ${PATH_VIEWBOX.w} ${PATH_VIEWBOX.h}`}
+      fill="none"
+      preserveAspectRatio="none"
+      className={className}
+      style={{ overflow: "visible", ...style }}
+      aria-hidden="true"
+    >
+      {/* Ghost stroke, offset a couple of units — the second pass of a pencil. */}
+      <path
+        d={PROCESS_PATH_D}
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity="0.22"
+        transform="translate(1.5 3)"
+      />
+      <path
+        ref={pathRef}
+        d={PROCESS_PATH_D}
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeDasharray="7 9"
+        opacity="0.55"
+      />
+    </svg>
+  );
+}
+
+export function ProcessPathVertical({ className, style }: MarkProps) {
+  return (
+    <svg viewBox="0 0 40 200" fill="none" preserveAspectRatio="none" className={className} style={style} aria-hidden="true">
+      <path d="M20 2c8 34-10 44-2 78s10 44 2 78" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="6 8" opacity="0.5" />
+    </svg>
+  );
+}
+
+/** A short hand-drawn tick trail. Used to mark distance travelled. */
+export function DotTrail({ className, style }: MarkProps) {
+  return (
+    <svg viewBox="0 0 90 12" fill="none" className={className} style={style} aria-hidden="true">
+      <path d="M2 8q20-8 42-2t44-3" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeDasharray="1 9" />
+    </svg>
+  );
+}

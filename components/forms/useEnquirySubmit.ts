@@ -1,26 +1,15 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { siteConfig } from "@/lib/site";
 
 export type SubmitState =
   | { status: "idle" }
   | { status: "sending" }
   | { status: "sent" }
-  /** Delivery is not configured — we say so and hand over a mailto fallback. */
-  | { status: "manual"; mailto: string; message: string }
+  /** Delivery is not configured. We say so plainly; there is no address to
+      fall back to, so we never pretend the answers went anywhere. */
+  | { status: "manual"; message: string }
   | { status: "error"; message: string };
-
-function buildMailto(kind: string, data: Record<string, string>) {
-  const subject = `${kind} — ${data.name || "Website enquiry"}`;
-  const body = Object.entries(data)
-    .filter(([, v]) => v?.trim())
-    .map(([k, v]) => `${k}: ${v}`)
-    .join("\n");
-  return `mailto:${siteConfig.email}?subject=${encodeURIComponent(
-    subject,
-  )}&body=${encodeURIComponent(body)}`;
-}
 
 export function useEnquirySubmit() {
   const [state, setState] = useState<SubmitState>({ status: "idle" });
@@ -28,7 +17,6 @@ export function useEnquirySubmit() {
   const submit = useCallback(
     async (kind: "enquiry" | "review", data: Record<string, string>) => {
       setState({ status: "sending" });
-      const label = kind === "review" ? "Website review" : "Project enquiry";
 
       try {
         const res = await fetch("/api/enquiry", {
@@ -46,9 +34,8 @@ export function useEnquirySubmit() {
         if (res.status === 503) {
           setState({
             status: "manual",
-            mailto: buildMailto(label, data),
             message:
-              "This deployment doesn't have email delivery connected yet, so nothing was sent. Your answers are ready in an email — one click and it's on its way.",
+              "This deployment doesn't have email delivery connected yet, so nothing was sent. Nothing has been lost either — try again once it's configured.",
           });
           return;
         }

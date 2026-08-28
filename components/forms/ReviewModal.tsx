@@ -169,15 +169,6 @@ export function ReviewModal({
                 ? `Thanks — the review is on my list. ${siteConfig.responseNote}`
                 : state.message}
             </p>
-            {state.status === "manual" ? (
-              <a
-                href={state.mailto}
-                className="group mt-9 inline-flex h-[3.4rem] items-center gap-3 rounded-full bg-paper px-8 text-[0.98rem] font-medium text-ink"
-              >
-                Open the email
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-            ) : null}
             <button
               type="button"
               onClick={close}

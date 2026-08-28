@@ -42,6 +42,22 @@ export function SmoothScroll() {
       history.replaceState(null, "", href);
     };
 
+    /**
+     * Programmatic scrolls from elsewhere in the app.
+     *
+     * Lenis drives window.scrollY from its own RAF loop, so a native
+     * `window.scrollTo` is overwritten on the next frame. Sections that need
+     * to move the page dispatch this instead; calling preventDefault tells
+     * the sender Lenis took it, so it can fall back to native when Lenis
+     * isn't running (touch, reduced-motion).
+     */
+    const onScrollTo = (e: Event) => {
+      const top = (e as CustomEvent<{ top: number }>).detail?.top;
+      if (typeof top !== "number") return;
+      e.preventDefault();
+      lenis.scrollTo(top, { duration: 0.9 });
+    };
+
     // Modals stop the page behind them.
     const onLock = (e: Event) => {
       const detail = (e as CustomEvent<{ locked: boolean }>).detail;
@@ -50,11 +66,13 @@ export function SmoothScroll() {
     };
 
     document.addEventListener("click", onClick);
+    window.addEventListener("site:scroll-to", onScrollTo as EventListener);
     window.addEventListener("site:scroll-lock", onLock as EventListener);
 
     return () => {
       cancelAnimationFrame(frame);
       document.removeEventListener("click", onClick);
+      window.removeEventListener("site:scroll-to", onScrollTo as EventListener);
       window.removeEventListener("site:scroll-lock", onLock as EventListener);
       lenis.destroy();
     };

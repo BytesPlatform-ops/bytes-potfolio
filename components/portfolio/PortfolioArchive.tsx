@@ -11,6 +11,7 @@ import { PortfolioViewer } from "@/components/portfolio/stage/PortfolioViewer";
 import type { ViewMode } from "@/components/portfolio/stage/PortfolioViewToggle";
 import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
 import { prettyUrl, cx } from "@/lib/utils";
+import { Halftone, Plus } from "@/components/collage/Marks";
 
 /**
  * The archive — all twenty-five, as type.
@@ -63,22 +64,31 @@ export function PortfolioArchive() {
 
   const active = hover !== null ? portfolioProjects[hover] : null;
 
-  /** Four hues on a loop, so the wall has rhythm without turning rainbow. */
+  /** Four hues on a loop, so the wall has rhythm without turning rainbow.
+      All four have to hold against midnight — near-black would vanish. */
   const ROW_HUES = [
     "var(--color-lime)",
     "var(--color-coral-soft)",
     "var(--color-paper)",
-    "var(--color-ink)",
+    "var(--color-accent-soft)",
   ];
 
   return (
     <>
       <section
         id="work"
-        className="section-y relative scroll-mt-24 overflow-hidden bg-accent text-paper"
+        className="section-y relative scroll-mt-24 overflow-hidden bg-midnight text-paper"
         aria-labelledby="archive-heading"
       >
-        <div className="shell-wide">
+        {/* ---- scenery: near-black, so this is the quietest pass on the site.
+             The rows are the composition; decoration only marks the margins. */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <Halftone gap={14} dot={2.4} className="absolute -right-[3%] top-[6%] h-[22vw] w-[16vw] text-accent/25" />
+          <Halftone gap={14} dot={2.4} className="absolute -left-[9%] bottom-[8%] hidden h-[15vw] w-[11vw] text-lime/15 lg:block" />
+          <Plus className="absolute right-[14%] bottom-[16%] hidden h-4 w-4 text-lime/70 lg:block" />
+        </div>
+
+        <div className="shell-wide relative">
           <span className="sticker sticker-lime">The archive</span>
           <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <TextReveal
@@ -161,14 +171,23 @@ export function PortfolioArchive() {
                   exit={{ opacity: 0, scale: 0.97 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--r-md)] bg-ink-soft shadow-[0_30px_60px_-30px_rgba(11,11,12,0.5)]">
+                  <div className="relative bg-paper p-2 shadow-[0_30px_60px_-30px_rgba(11,11,12,0.55)]">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-ink-soft">
+                      <Image
+                        src={active.desktopImage}
+                        alt=""
+                        fill
+                        sizes="26vw"
+                        quality={70}
+                        className="object-cover object-top"
+                      />
+                    </div>
                     <Image
-                      src={active.desktopImage}
+                      src="/collage/paper/black-tape.png"
                       alt=""
-                      fill
-                      sizes="26vw"
-                      quality={70}
-                      className="object-cover object-top"
+                      width={80}
+                      height={43}
+                      className="absolute -top-3.5 left-1/2 w-[3.4rem] -translate-x-1/2 -rotate-3"
                     />
                   </div>
                 </motion.div>

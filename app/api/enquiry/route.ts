@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { siteConfig } from "@/lib/site";
 
 export const runtime = "nodejs";
 
@@ -55,18 +54,19 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.ENQUIRY_TO_EMAIL ?? siteConfig.email;
+  const to = process.env.ENQUIRY_TO_EMAIL;
   const from = process.env.ENQUIRY_FROM_EMAIL;
 
-  // No credentials configured. Say so honestly rather than faking success —
-  // the UI falls back to a prefilled mailto link.
-  if (!apiKey || !from) {
+  // No credentials configured, or no recipient. Say so honestly rather than
+  // faking success. The recipient is server-side only and has no default: an
+  // address compiled into the client bundle is a published address.
+  if (!apiKey || !from || !to) {
     return NextResponse.json(
       {
         delivered: false,
         reason: "not-configured",
         error:
-          "Email delivery is not configured on this deployment. Set RESEND_API_KEY and ENQUIRY_FROM_EMAIL to enable it.",
+          "Email delivery is not configured on this deployment. Set RESEND_API_KEY, ENQUIRY_FROM_EMAIL and ENQUIRY_TO_EMAIL to enable it.",
       },
       { status: 503 },
     );

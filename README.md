@@ -1,7 +1,8 @@
-# Bytes Platform — Studio Landing Page
+# Bia Zane — Personal Portfolio
 
-A single-page, portfolio-first site for **Bytes Platform**, built to convert visitors
-into design and development leads. Next.js App Router, TypeScript, Tailwind v4, Motion.
+A single-page, portfolio-first site for **Bia Zane**, a CMS developer working in
+WordPress, Shopify and Webflow. Built to turn visitors into project enquiries.
+Next.js App Router, TypeScript, Tailwind v4, Motion.
 
 ---
 
@@ -94,14 +95,15 @@ Always write a meaningful `desktopImageAlt`.
 The enquiry and website-review forms validate on the client **and** on the
 server (`app/api/enquiry/route.ts`).
 
-Without credentials the API returns `503` and the UI says so plainly, then
-offers a prefilled `mailto:` link. **It never claims a message was sent when it
-wasn't.** To enable real delivery, copy `.env.example` to `.env.local`:
+Without credentials the API returns `503` and the UI says so plainly. **It never
+claims a message was sent when it wasn't**, and there is no address to fall back
+to — no contact address is published anywhere in the client bundle. To enable
+real delivery, copy `.env.example` to `.env.local`:
 
 ```bash
 RESEND_API_KEY=re_xxx
 ENQUIRY_FROM_EMAIL=website@yourverifieddomain.com   # verified sender
-ENQUIRY_TO_EMAIL=hello@bytesplatform.com            # optional; defaults to siteConfig.email
+ENQUIRY_TO_EMAIL=you@yourdomain.com                 # required; server-side only
 ```
 
 Resend is called over `fetch` — no SDK dependency. Swapping providers means
@@ -184,8 +186,13 @@ in `lib/site.ts` so canonical/OpenGraph URLs point at the real domain.
 
 ## Replace before going live
 
-- `siteConfig.phone` — currently the demo number `+1 (646) 555-0182`.
-- `siteConfig.social.linkedin` — currently `#`.
+- `NEXT_PUBLIC_SITE_URL` — unset. Until it is, `metadataBase`, the OpenGraph
+  `url` and the JSON-LD `url`/`image` are omitted rather than guessed.
+- `ENQUIRY_TO_EMAIL` — unset. The form returns `503` until it is set.
+- `siteConfig.social.linkedin` / `instagram` / `x` — currently `#`.
 - The footer **Privacy** link — currently `#`.
-- `siteConfig.url` — currently `https://bytesplatform.com`.
 - Optionally add a real OG image; metadata currently points at a portfolio screenshot.
+
+No contact address, phone number or domain is committed to this repository. If
+you add one, add it through the environment, not through `lib/site.ts` — anything
+in `siteConfig` ships to the browser.

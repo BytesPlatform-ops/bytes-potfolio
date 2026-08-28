@@ -5,24 +5,47 @@ import { motion, useMotionValue, useTransform, type MotionValue } from "motion/r
 import { portrait } from "@/lib/site";
 import { cx } from "@/lib/utils";
 
-export type PortraitCrop = "full" | "bust" | "frame";
+export type PortraitCrop = "tall" | "bust" | "frame";
 
-const SRC: Record<PortraitCrop, string> = {
-  full: "/collage/portraits/baneen-full.webp",
-  bust: "/collage/portraits/baneen-bust.webp",
-  frame: "/collage/portraits/baneen-frame.webp",
+/**
+ * Intrinsic sizes, so `next/image` reserves the right box before load.
+ *
+ * These are full-length figures, which changes what the layout around them
+ * can do. The head sits in the top fifth and everything below is body, so a
+ * headline can cross the figure low without touching the face.
+ *
+ * The keys are kept as they were — `tall`, `frame`, `bust` — because three
+ * sections already ask for them by name; only what they point at has changed.
+ *
+ * Every frame in this set is 1086×1448 — a flat 3:4. The set it replaced ran
+ * from 0.49 to 0.64 wide, so at any given width the new figures come out
+ * markedly shorter. Each call site's width was scaled up to hold her previous
+ * standing height rather than left alone; see the notes there.
+ */
+const SRC: Record<PortraitCrop, { src: string; w: number; h: number }> = {
+  /** Standing, arms crossed. The most upright of the set — the hero. */
+  tall: { src: "/profile/bia-hijab-hero.png", w: 1086, h: 1448 },
+  /** Seated with the laptop, hand to chin. Reads as working — About. */
+  frame: { src: "/profile/bia-hijab-seated-01.png", w: 1086, h: 1448 },
+  /** Mid-stride with laptop and bag — the closing section. */
+  bust: { src: "/profile/bia-hijab-standing.png", w: 1086, h: 1448 },
 };
 
 /**
- * Baneen, on her own layer.
+ * Bia, on her own layer.
  *
- * Deliberately NOT the source sheet: three separate crops of her were cut out
- * and given torn-paper alpha edges, so she can overlap typography, parallax
- * independently of the collage behind her, and appear in a different crop in
- * each section. Nothing here renders a full collage image.
+ * Three of the five supplied hijab figures, one per section, so she is never
+ * the same picture twice on one page. The other two —
+ * `bia-hijab-seated-02.png` and `bia-hijab-creative-01.png` — are in
+ * `/public/profile/` and unused: adding them would mean inventing a section
+ * to hold them.
+ *
+ * They arrive as clean cut-outs with their own collage already around them —
+ * plants, notes, doodles — so no torn-paper edge is added here and each
+ * section keeps its own decoration light around her.
  */
 export function PortraitCollage({
-  crop = "full",
+  crop = "tall",
   className,
   width,
   rotate = 0,
@@ -56,21 +79,21 @@ export function PortraitCollage({
       style={{ width, zIndex: z, x, y }}
     >
       <motion.div
-        initial={{ opacity: 0, y: 34, scale: 0.96 }}
+        initial={{ opacity: 0, y: 58, scale: 0.965 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1], delay }}
+        transition={{ duration: 1.15, ease: [0.16, 1, 0.3, 1], delay }}
         style={{ rotate }}
       >
         <Image
-          src={SRC[crop]}
+          src={SRC[crop].src}
           alt={portrait.alt}
-          width={crop === "bust" ? 440 : 613}
-          height={crop === "bust" ? 505 : 998}
+          width={SRC[crop].w}
+          height={SRC[crop].h}
           quality={92}
           priority={priority}
           sizes="(max-width: 1024px) 62vw, 34vw"
-          className="h-auto w-full drop-shadow-[0_28px_50px_rgba(16,16,16,0.28)]"
+          className="h-auto w-full drop-shadow-[0_22px_38px_rgba(16,16,16,0.18)]"
         />
       </motion.div>
     </motion.div>

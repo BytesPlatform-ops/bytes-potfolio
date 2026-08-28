@@ -5,7 +5,7 @@ import {
   JetBrains_Mono,
   Caveat,
 } from "next/font/google";
-import { siteConfig, me } from "@/lib/site";
+import { siteConfig, me, siteUrl } from "@/lib/site";
 import { Analytics } from "@/components/analytics/Analytics";
 import "./globals.css";
 
@@ -42,7 +42,7 @@ const monoLabel = JetBrains_Mono({
 const title = `${siteConfig.name} — ${siteConfig.tagline}`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   title: {
     default: title,
     template: `%s — ${siteConfig.name}`,
@@ -50,30 +50,34 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   alternates: { canonical: "/" },
   keywords: [
-    "freelance web designer",
-    "freelance web developer",
-    "independent designer developer",
-    "website design",
-    "UI UX design",
-    "creative development",
-    "web application development",
+    "CMS developer",
+    "WordPress developer",
+    "Shopify developer",
+    "Webflow developer",
+    "Figma to WordPress",
+    "Figma to Shopify",
+    "Figma to Webflow",
+    "Elementor Pro",
+    "Shopify Liquid",
+    "theme customization",
     "website redesign",
+    "conversion focused websites",
   ],
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   openGraph: {
     type: "website",
-    url: siteConfig.url,
+    ...(siteUrl ? { url: siteUrl } : {}),
     siteName: siteConfig.name,
     title,
     description: siteConfig.description,
     locale: "en_US",
     images: [
       {
-        url: "/portfolio/nonnis-desktop.webp",
-        width: 2000,
-        height: 1250,
-        alt: `${siteConfig.name} — selected work`,
+        url: "/profile/bia-zane.webp",
+        width: 888,
+        height: 1184,
+        alt: `${siteConfig.name} — ${siteConfig.tagline}`,
       },
     ],
   },
@@ -81,7 +85,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description: siteConfig.description,
-    images: ["/portfolio/nonnis-desktop.webp"],
+    images: ["/profile/bia-zane.webp"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -103,23 +107,31 @@ export const viewport: Viewport = {
 /**
  * Person, not Organization. This is one freelancer: claiming an organisation
  * in structured data would be a straightforward misrepresentation to search
- * engines. No address or registration data — none exists to state.
+ * engines. No address, registration or contact data — none is published, and
+ * `url`/`image` appear only once a real origin is configured.
  */
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: me.name,
-  url: siteConfig.url,
-  email: siteConfig.email,
+  ...(siteUrl
+    ? {
+        url: siteUrl,
+        image: new URL("/profile/bia-zane.webp", siteUrl).toString(),
+      }
+    : {}),
+  alternateName: me.brand,
   jobTitle: me.role,
   description: siteConfig.description,
   knowsAbout: [
-    "Website Design",
-    "Frontend Development",
-    "UI/UX Design",
-    "Creative Development",
-    "Web Applications",
+    "WordPress Development",
+    "Shopify Development",
+    "Webflow Development",
+    "Content Management Systems",
+    "Theme Customization",
+    "Figma to CMS",
     "E-commerce",
+    "Conversion Rate Optimisation",
   ],
 };
 
