@@ -99,8 +99,9 @@ export function About() {
               as="p"
               className="t-section mt-2 max-w-[18ch] text-ink/45"
               lines={[
-                <>{me.role} specialised</>,
-                <>in {me.platforms[0]}, {me.platforms[1]}</>,
+                <>A {me.role}</>,
+                <>specialised in</>,
+                <>{me.platforms[0]}, {me.platforms[1]}</>,
                 <>&amp; {me.platforms[2]}</>,
               ]}
             />
@@ -109,9 +110,9 @@ export function About() {
               <Reveal delay={1}>
                 <p className="t-body text-muted-ink">
                   Are you searching for an expert WordPress developer, Shopify
-                  developer, or Webflow developer? I&rsquo;m a professional
-                  WordPress, Shopify &amp; Webflow developer specializing in
-                  high-performance, responsive, conversion-focused websites.
+                  developer, or Webflow developer? That&rsquo;s the work:
+                  high-performance, responsive, conversion-focused websites,
+                  built so your team can run them afterwards.
                 </p>
               </Reveal>
               <Reveal delay={2}>

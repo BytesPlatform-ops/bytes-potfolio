@@ -415,6 +415,14 @@ function DesktopPreview({
             // Only the tall full-page capture actually scrolls; a fold-only
             // shot must not promise a SCROLL cursor it cannot honour.
             data-cursor={project.fullImage ? "scroll" : undefined}
+            /* Lenis, when stopped, calls preventDefault() on *every* wheel
+               event and returns — so opening this modal (which stops it) was
+               swallowing the wheel across the whole page, and only the arrow
+               keys still reached the capture. `data-lenis-prevent` is checked
+               one branch earlier than that, so the event is released here and
+               the browser scrolls this element natively. */
+            data-lenis-prevent
+            style={{ WebkitOverflowScrolling: "touch" }}
             className="no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[#0d0d11]"
           >
             <Image
@@ -458,6 +466,9 @@ function MobilePreview({
         {shot && project.mobileImage ? (
           <div
             data-cursor="scroll"
+            /* Same release as the desktop frame above. */
+            data-lenis-prevent
+            style={{ WebkitOverflowScrolling: "touch" }}
             className="no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain"
           >
             <Image
