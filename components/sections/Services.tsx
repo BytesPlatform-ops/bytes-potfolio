@@ -13,9 +13,15 @@ import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
 /**
  * Things I'm good at.
  *
- * Four words, not six service rows. Hovering one swaps the crop on the right
+ * Four words, not six service rows. Hovering one swaps the piece on the right
  * and the accent on the left, so the section is browsed rather than read —
  * which is the point of replacing a capability list with a set of verbs.
+ *
+ * The panel shows the four design pieces rather than project screenshots.
+ * They are finished compositions in their own right — taped mockups carrying
+ * their own handwritten labels — so they are shown whole rather than cropped,
+ * which is what the old website crops were doing. One image per word; the
+ * pairing is a judgement call and is a one-line change each.
  */
 const AREAS = [
   {
@@ -23,28 +29,28 @@ const AREAS = [
     word: "Design",
     does: "web design · UI/UX · creative direction",
     accent: "var(--color-accent)",
-    shot: "/portfolio/cuberto-desktop.webp",
+    shot: "/bia_z_4_senior_graphic_designer_assets/01_brand_identity.png",
   },
   {
     id: "code",
     word: "Code",
     does: "frontend · web apps · CMS",
     accent: "var(--color-lime-deep)",
-    shot: "/portfolio/terminal-industries-desktop.webp",
+    shot: "/bia_z_4_senior_graphic_designer_assets/04_creative_direction.png",
   },
   {
     id: "motion",
     word: "Motion",
     does: "micro-interactions · scroll · creative dev",
     accent: "var(--color-coral)",
-    shot: "/portfolio/lusion-desktop.webp",
+    shot: "/bia_z_4_senior_graphic_designer_assets/02_editorial_design.png",
   },
   {
     id: "commerce",
     word: "Commerce",
     does: "Shopify · e-commerce · conversion",
     accent: "var(--color-accent)",
-    shot: "/portfolio/flowers-for-society-desktop.webp",
+    shot: "/bia_z_4_senior_graphic_designer_assets/03_campaign_visuals.png",
   },
 ];
 
@@ -132,9 +138,13 @@ export function Services() {
             })}
           </ul>
 
-          {/* the crop */}
+          {/* the piece */}
           <div className="lg:col-span-5">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--r-md)] bg-ink-soft tilt-r">
+            {/* No dark card and no crop. These arrive as cut-outs already
+                mounted on their own paper, so a box behind them would be a
+                frame around a frame — and `object-cover` sliced the
+                handwritten label off the bottom of every one. */}
+            <div className="relative aspect-[6/5] w-full tilt-r">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={current.id}
@@ -148,17 +158,16 @@ export function Services() {
                     src={current.shot}
                     alt=""
                     fill
-                    quality={72}
+                    quality={86}
                     sizes="(max-width: 1024px) 92vw, 34vw"
-                    className="object-cover object-top"
+                    className="object-contain object-center drop-shadow-[0_20px_36px_rgba(16,16,16,0.16)]"
                   />
                 </motion.div>
               </AnimatePresence>
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-1.5"
-                style={{ background: current.accent }}
-              />
+              {/* The accent bar that used to edge the dark card is gone. With
+                  the card removed it floated at the tilt's angle under the
+                  piece and read as a stray rule; the active word already
+                  carries the colour. */}
             </div>
           </div>
         </div>
