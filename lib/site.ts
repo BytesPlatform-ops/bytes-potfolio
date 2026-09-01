@@ -16,7 +16,7 @@
  */
 export const me = {
   /** Full professional name. Introductions, metadata, structured data. */
-  name: "Bia Zane",
+  name: "Bia Zehra",
   /** Compact wordmark. Header and other tight lockups only. */
   brand: "BIA Z.",
   role: "CMS Developer",
@@ -43,7 +43,7 @@ export const siteConfig = {
   brand: me.brand,
   tagline: positioning,
   description:
-    "I'm Bia Zane — a CMS developer building high-performance WordPress, Shopify and Webflow sites. Figma to CMS, theme and template customisation, and the integrations that make it all actually work.",
+    "I'm Bia Zehra — a CMS developer building high-performance WordPress, Shopify and Webflow sites. Figma to CMS, theme and template customisation, and the integrations that make it all actually work.",
 
   /** Sits under the wordmark, in the footer and in the hero rail. */
   discipline: "CMS developer",
@@ -79,12 +79,12 @@ export const siteConfig = {
  * same picture twice on one page. They are cut-outs with their own collage
  * around them and sit on their own layer above the page's paper.
  *
- * `/profile/bia-zane.webp` is the flattened version on an opaque cream ground
+ * `/profile/bia-zehra.webp` is the flattened version on an opaque cream ground
  * for OpenGraph and avatars, where transparency renders as black in several
  * clients.
  */
 export const portrait = {
-  src: "/profile/bia-zane.webp",
+  src: "/profile/bia-zehra.webp",
   hasPortrait: true,
   alt: `${me.name} — ${me.role}`,
 } as const;

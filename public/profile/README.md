@@ -1,6 +1,6 @@
 # Profile assets
 
-`bia-zane.webp` is the canonical portrait — the standing figure flattened onto
+`bia-zehra.webp` is the canonical portrait — the standing figure flattened onto
 an opaque cream ground, used for OpenGraph, Twitter cards and anywhere an
 avatar is needed. It is deliberately not transparent: several clients render
 alpha as black.

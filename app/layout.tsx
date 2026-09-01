@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/profile/bia-zane.webp",
+        url: "/profile/bia-zehra.webp",
         width: 888,
         height: 1184,
         alt: `${siteConfig.name} — ${siteConfig.tagline}`,
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description: siteConfig.description,
-    images: ["/profile/bia-zane.webp"],
+    images: ["/profile/bia-zehra.webp"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -117,7 +117,7 @@ const personSchema = {
   ...(siteUrl
     ? {
         url: siteUrl,
-        image: new URL("/profile/bia-zane.webp", siteUrl).toString(),
+        image: new URL("/profile/bia-zehra.webp", siteUrl).toString(),
       }
     : {}),
   alternateName: me.brand,

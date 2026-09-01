@@ -1,6 +1,6 @@
-# Bia Zane — Personal Portfolio
+# Bia Zehra — Personal Portfolio
 
-A single-page, portfolio-first site for **Bia Zane**, a CMS developer working in
+A single-page, portfolio-first site for **Bia Zehra**, a CMS developer working in
 WordPress, Shopify and Webflow. Built to turn visitors into project enquiries.
 Next.js App Router, TypeScript, Tailwind v4, Motion.
 
