@@ -8,16 +8,15 @@
  *
  * There is deliberately no address or domain here. See `siteUrl` below.
  *
- * Two forms of the name, deliberately kept separate. `brand` is the compact
- * wordmark and only ever appears where space is tight — the header lockup, the
- * modal's eyebrow label. `name` is the full professional name and is what goes
- * anywhere the reader is being introduced to a person or a machine is reading
- * the page: About, footer, SEO title, OpenGraph, Person schema.
+ * She goes by the short form everywhere, so `name` and `brand` are the same
+ * name — `brand` is only its all-caps setting, which the header lockup and the
+ * modal eyebrow want. Everything else — About, footer, SEO title, OpenGraph,
+ * Person schema — reads `name`.
  */
 export const me = {
-  /** Full professional name. Introductions, metadata, structured data. */
-  name: "Bia Zehra",
-  /** Compact wordmark. Header and other tight lockups only. */
+  /** How she is named everywhere: introductions, metadata, structured data. */
+  name: "Bia Z.",
+  /** The same name, set in caps for the header lockup. Not a second name. */
   brand: "BIA Z.",
   role: "CMS Developer",
   /** The three platforms the practice is actually built on. */
@@ -43,7 +42,7 @@ export const siteConfig = {
   brand: me.brand,
   tagline: positioning,
   description:
-    "I'm Bia Zehra — a CMS developer building high-performance WordPress, Shopify and Webflow sites. Figma to CMS, theme and template customisation, and the integrations that make it all actually work.",
+    "I'm Bia Z. — a CMS developer building high-performance WordPress, Shopify and Webflow sites. Figma to CMS, theme and template customisation, and the integrations that make it all actually work.",
 
   /** Sits under the wordmark, in the footer and in the hero rail. */
   discipline: "CMS developer",
@@ -79,12 +78,12 @@ export const siteConfig = {
  * same picture twice on one page. They are cut-outs with their own collage
  * around them and sit on their own layer above the page's paper.
  *
- * `/profile/bia-zehra.webp` is the flattened version on an opaque cream ground
+ * `/profile/bia-z.webp` is the flattened version on an opaque cream ground
  * for OpenGraph and avatars, where transparency renders as black in several
  * clients.
  */
 export const portrait = {
-  src: "/profile/bia-zehra.webp",
+  src: "/profile/bia-z.webp",
   hasPortrait: true,
   alt: `${me.name} — ${me.role}`,
 } as const;

@@ -93,7 +93,10 @@ export function About() {
               as="h2"
               id="about-heading"
               className="t-display mt-6 max-w-[14ch] text-ink"
-              lines={[<>Hi, I&rsquo;m {me.name}.</>]}
+              /* The name itself ends in a full stop ("Bia Z."), so the
+                 sentence must not add a second one — and must still close
+                 properly if the name ever stops ending in one. */
+              lines={[<>Hi, I&rsquo;m {me.name}{me.name.endsWith(".") ? "" : "."}</>]}
             />
             <TextReveal
               as="p"

@@ -264,7 +264,7 @@ export function Hero() {
             className="t-body relative max-w-[36rem] -rotate-[0.6deg] bg-paper/95 px-7 py-5 text-pretty text-center text-muted-ink shadow-[0_22px_50px_-34px_rgba(16,16,16,0.6)] backdrop-blur-[2px]"
             style={{ opacity: copyOpacity, borderRadius: "16px 6px 15px 5px" }}
           >
-            I&rsquo;m Bia Zehra, a CMS developer who builds fast, responsive
+            I&rsquo;m {me.name}, a CMS developer who builds fast, responsive
             WordPress, Shopify and Webflow sites. Figma to CMS, theme and
             template customisation, and the integrations that make it all
             actually work.
